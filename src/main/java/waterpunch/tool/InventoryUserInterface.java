@@ -4,20 +4,31 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import waterpunch.tool.data.IUISize;
+import waterpunch.tool.data.IUIType;
 import waterpunch.tool.tool.IuiCustomizer;
 
 public final class InventoryUserInterface extends IuiCustomizer {
 
      private String name = "DEFAULT";
-     private IUIType type = IUIType.PRIVATE;
      private IUISize size = IUISize.x1;
+     private IUIType type = IUIType.PRIVATE;
+
      private UUID owner;
+
      private ArrayList<ItemStack> items = new ArrayList<>();
+
+     public InventoryUserInterface() {}
+
+     public InventoryUserInterface(@Nonnull IUISize size) {
+          if (!Objects.isNull(size)) setSize(size);
+     }
 
      public InventoryUserInterface(String name, IUISize size) {
           if (!Objects.isNull(name)) setName(name);
@@ -45,15 +56,22 @@ public final class InventoryUserInterface extends IuiCustomizer {
      }
 
      public void setItem(int i, ItemStack item) {
-          //TODO 最大サイズを超える場合はエラーを発生するようにします。
+          if (i < 0 || i > getSize().getCount() - 1) return;
 
           items.set(i, item);
      }
 
+     public ArrayList<ItemStack> getItems() {
+          return items;
+     }
+
      public ItemStack getItem(int i) {
+          //インベントリのサイズを確認し、サイズ以上ならエラーが発生します。
+          //-1はインベントリが0から始まるための調整です。
           //TODO システムアイテムの場合はnullを返すようにします。
-          ItemStack item = items.get(i);
-          return item;
+          if (i < 0 || i > getSize().getCount() - 1) return null;
+          if (getItems().size() < i) return null;
+          return getItems().get(i);
      }
 
      /**
@@ -76,8 +94,9 @@ public final class InventoryUserInterface extends IuiCustomizer {
           return type;
      }
 
-     public void print(Player player) {
-          Inventory ResponseInventory = Bukkit.createInventory(getOwner(), size.getCount(), getName());
-          player.openInventory(ResponseInventory);
+     public InventoryUserInterface printInventory() {
+          Bukkit.createInventory(getOwner(), size.getCount(), getName());
+          printBorder(this);
+          return this;
      }
 }

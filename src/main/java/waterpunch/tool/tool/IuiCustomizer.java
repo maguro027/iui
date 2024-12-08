@@ -1,7 +1,5 @@
 package waterpunch.tool.tool;
 
-import org.bukkit.inventory.ItemStack;
-
 import waterpunch.tool.InventoryUserInterface;
 
 /**
@@ -9,28 +7,43 @@ import waterpunch.tool.InventoryUserInterface;
  */
 public class IuiCustomizer extends ItemCreator {
 
+     private boolean border;
+     private int page;
+
+     /**
+      * @see ボーダーのONとOFFが切り替えれます、TrueでONです。
+      * @see printBorder()を実行しないと切り替わりません。
+      */
+     public void setBorder(boolean yn) {
+          border = yn;
+     }
+
+     public boolean getBorder() {
+          return border;
+     }
+
      /**
       * @see IUIの上下等にBorderを設置できます。
       * @see サイズなどは内部で判断しますので気にせず入れてください。
       * @see ボーダーの形は内部のコメントで詳細を書いていますので、確認してください。
       * @param inv IUIで生成したものを代入してください、中身が入っていてボーダーに被るアイテムは削除されます。
       */
-     public static InventoryUserInterface setBorder(InventoryUserInterface inv) {
+     public InventoryUserInterface printBorder(InventoryUserInterface inv) {
+          if (!getBorder()) return inv;
           //ボーダーアイテムを生成します、空白等を埋めてください。
-          ItemStack cash = getBLANK();
-
           switch (inv.getSize()) {
                case x1:
                     //左右1マスずつにボーダーを設定します。
-                    inv.setItem(0, new ItemStack(cash));
-                    inv.setItem(8, new ItemStack(cash));
+
+                    inv.setItem(0, getBLANK());
+                    inv.setItem(8, getBLANK());
+
                     break;
                case x2:
                     //下の段のみにボーダーを設定します。
 
-                    for (int i = 9; i < inv.getSize().getCount(); ++i) {
-                         inv.setItem(i, new ItemStack(cash));
-                    }
+                    for (int i = 9; i < inv.getSize().getCount(); ++i) inv.setItem(i, getBLANK());
+
                     break;
                case x3:
                case x4:
@@ -40,8 +53,9 @@ public class IuiCustomizer extends ItemCreator {
 
                     for (int i = 0; i < inv.getSize().getCount(); ++i) {
                          if (i > 8 && i < inv.getSize().getCount() - 9) continue;
-                         inv.setItem(i, new ItemStack(cash));
+                         inv.setItem(i, getBLANK());
                     }
+
                     break;
                default:
                     break;

@@ -1,4 +1,4 @@
-package waterpunch.tool;
+package waterpunch.tool.data;
 
 /**
  * @author maguro027

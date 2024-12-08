@@ -10,10 +10,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ItemCreator {
+/**
+ *  @author maguro027
+ */
+
+public class ItemCreator extends ColoredText {
 
      //システムアイテムの識別タグです。
-     public static String SYSTEM_ITEM = "SYSTEM_ITEM";
+     public static String SYSTEM_ITEM = setRED("SYSTEM_ITEM");
 
      /**
       * @see アイテムを生成します。
@@ -76,7 +80,17 @@ public class ItemCreator {
      }
 
      /**
-      * @see 何らかのエラーが発生したときに使用してください
+      * @see 代入されたアイテムがシステムアイテムかどうか判断します。
+      * @see システムアイテムの場合trueを返還します。
+      */
+
+     public static boolean isSystemItem(ItemStack item) {
+          if (item.getItemMeta().getLore() == null) return false;
+          return item.getItemMeta().getLore().get(0).contains(SYSTEM_ITEM);
+     }
+
+     /**
+      * @see 何らかのエラーが発生したときに使用してください。
       */
 
      public static ItemStack getERROR() {
