@@ -3,13 +3,10 @@ package waterpunch.tool;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
-
 import javax.annotation.Nonnull;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import waterpunch.tool.data.IUISize;
 import waterpunch.tool.data.IUIType;
 import waterpunch.tool.tool.IuiCustomizer;
@@ -19,6 +16,7 @@ public final class InventoryUserInterface extends IuiCustomizer {
      private String name = "DEFAULT";
      private IUISize size = IUISize.x1;
      private IUIType type = IUIType.PRIVATE;
+     private int page;
 
      private UUID owner;
 
@@ -53,6 +51,14 @@ public final class InventoryUserInterface extends IuiCustomizer {
 
      public String getName() {
           return name;
+     }
+
+     public void setPage(int i) {
+          this.page = i;
+     }
+
+     public int getPage() {
+          return page;
      }
 
      public void setItem(int i, ItemStack item) {

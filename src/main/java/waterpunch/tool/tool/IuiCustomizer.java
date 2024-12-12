@@ -8,7 +8,6 @@ import waterpunch.tool.InventoryUserInterface;
 public class IuiCustomizer extends ItemCreator {
 
      private boolean border;
-     private int page;
 
      /**
       * @see ボーダーのONとOFFが切り替えれます、TrueでONです。
