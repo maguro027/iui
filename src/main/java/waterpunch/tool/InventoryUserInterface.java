@@ -3,20 +3,24 @@ package waterpunch.tool;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
+
 import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import waterpunch.tool.data.IUISize;
-import waterpunch.tool.data.IUIType;
+
+import waterpunch.tool.data.enums.IUISize;
+import waterpunch.tool.data.enums.IUIType;
+import waterpunch.tool.tool.Info;
 import waterpunch.tool.tool.IuiCustomizer;
 
-public final class InventoryUserInterface extends IuiCustomizer {
+public final class InventoryUserInterface extends Info {
 
-     private String name = "DEFAULT";
      private IUISize size = IUISize.x1;
      private IUIType type = IUIType.PRIVATE;
-     private int page;
+
+     private IuiCustomizer customizer;
 
      private UUID owner;
 
@@ -26,6 +30,10 @@ public final class InventoryUserInterface extends IuiCustomizer {
 
      public InventoryUserInterface(@Nonnull IUISize size) {
           if (!Objects.isNull(size)) setSize(size);
+     }
+
+     public InventoryUserInterface(String name) {
+          if (!Objects.isNull(name)) setName(name);
      }
 
      public InventoryUserInterface(String name, IUISize size) {
@@ -45,20 +53,12 @@ public final class InventoryUserInterface extends IuiCustomizer {
           return owner;
      }
 
-     public void setName(String name) {
-          this.name = name;
+     public void setCustomizer(IuiCustomizer customizer) {
+          this.customizer = customizer;
      }
 
-     public String getName() {
-          return name;
-     }
-
-     public void setPage(int i) {
-          this.page = i;
-     }
-
-     public int getPage() {
-          return page;
+     public IuiCustomizer getCustomizer() {
+          return customizer;
      }
 
      public void setItem(int i, ItemStack item) {
@@ -102,7 +102,7 @@ public final class InventoryUserInterface extends IuiCustomizer {
 
      public InventoryUserInterface printInventory() {
           Bukkit.createInventory(getOwner(), size.getCount(), getName());
-          printBorder(this);
+          customizer.printBorder(this);
           return this;
      }
 }

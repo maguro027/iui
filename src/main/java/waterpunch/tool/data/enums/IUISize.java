@@ -1,4 +1,4 @@
-package waterpunch.tool.data;
+package waterpunch.tool.data.enums;
 
 /**
  * @author maguro027
