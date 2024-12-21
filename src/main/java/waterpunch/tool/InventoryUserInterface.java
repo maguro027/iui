@@ -2,29 +2,26 @@ package waterpunch.tool;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import waterpunch.tool.data.enums.IUISize;
 import waterpunch.tool.data.enums.IUIType;
-import waterpunch.tool.tool.Info;
+import waterpunch.tool.data.enums.Info;
+import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.tool.IuiCustomizer;
 
-public final class InventoryUserInterface extends Info {
+public final class InventoryUserInterface {
 
      private IUISize size = IUISize.x1;
      private IUIType type = IUIType.PRIVATE;
 
      private IuiCustomizer customizer;
+     private Info info;
 
-     private UUID owner;
-
-     private ArrayList<ItemStack> items = new ArrayList<>();
+     private ArrayList<IUIItem> items = new ArrayList<>();
 
      public InventoryUserInterface() {}
 
@@ -33,24 +30,12 @@ public final class InventoryUserInterface extends Info {
      }
 
      public InventoryUserInterface(String name) {
-          if (!Objects.isNull(name)) setName(name);
+          if (!Objects.isNull(name)) info.setName(name);
      }
 
      public InventoryUserInterface(String name, IUISize size) {
-          if (!Objects.isNull(name)) setName(name);
+          if (!Objects.isNull(name)) info.setName(name);
           if (!Objects.isNull(size)) setSize(size);
-     }
-
-     public void setOwner(UUID owner) {
-          this.owner = owner;
-     }
-
-     public Player getOwner() {
-          return Bukkit.getPlayer(getOwnerUUID());
-     }
-
-     public UUID getOwnerUUID() {
-          return owner;
      }
 
      public void setCustomizer(IuiCustomizer customizer) {
@@ -61,23 +46,23 @@ public final class InventoryUserInterface extends Info {
           return customizer;
      }
 
-     public void setItem(int i, ItemStack item) {
+     public void setItem(int i, IUIItem item) {
           if (i < 0 || i > getSize().getCount() - 1) return;
 
           items.set(i, item);
      }
 
-     public ArrayList<ItemStack> getItems() {
+     public ArrayList<IUIItem> getItems() {
           return items;
      }
 
-     public ItemStack getItem(int i) {
-          //インベントリのサイズを確認し、サイズ以上ならエラーが発生します。
-          //-1はインベントリが0から始まるための調整です。
-          //TODO システムアイテムの場合はnullを返すようにします。
-          if (i < 0 || i > getSize().getCount() - 1) return null;
-          if (getItems().size() < i) return null;
-          return getItems().get(i);
+     public IUIItem getItem(int i) {
+          try {
+               IUIItem item = getItems().get(i);
+               return item;
+          } catch (Exception e) {
+               return null;
+          }
      }
 
      /**
@@ -101,8 +86,12 @@ public final class InventoryUserInterface extends Info {
      }
 
      public InventoryUserInterface printInventory() {
-          Bukkit.createInventory(getOwner(), size.getCount(), getName());
+          Bukkit.createInventory(info.getOwner(), size.getCount(), info.getName());
           customizer.printBorder(this);
           return this;
+     }
+
+     public void setItems(ArrayList<IUIItem> items) {
+          this.items = items;
      }
 }

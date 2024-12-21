@@ -2,9 +2,10 @@ package waterpunch.tool;
 
 import java.util.ArrayList;
 
-public class InventoryBook {
+import waterpunch.tool.data.enums.Info;
 
-     private String name = "DEFAULT";
+public class InventoryBook extends Info {
+
      private final ArrayList<InventoryUserInterface> list = new ArrayList<>();
 
      public InventoryBook(String name) {}
@@ -34,13 +35,5 @@ public class InventoryBook {
 
      public int getSize() {
           return list.size();
-     }
-
-     public void setName(String str) {
-          name = str;
-     }
-
-     public String getName() {
-          return name;
      }
 }

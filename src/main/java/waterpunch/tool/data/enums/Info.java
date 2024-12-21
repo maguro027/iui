@@ -1,4 +1,4 @@
-package waterpunch.tool.tool;
+package waterpunch.tool.data.enums;
 
 import java.util.UUID;
 

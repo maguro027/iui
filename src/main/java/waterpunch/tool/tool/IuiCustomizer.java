@@ -1,11 +1,12 @@
 package waterpunch.tool.tool;
 
 import waterpunch.tool.InventoryUserInterface;
+import waterpunch.tool.item.IUIItem;
 
 /**
  *  @author maguro027
  */
-public class IuiCustomizer extends ItemCreator {
+public class IuiCustomizer {
 
      private boolean border;
 
@@ -34,14 +35,14 @@ public class IuiCustomizer extends ItemCreator {
                case x1:
                     //左右1マスずつにボーダーを設定します。
 
-                    inv.setItem(0, getBLANK());
-                    inv.setItem(8, getBLANK());
+                    inv.setItem(0, IUIItem.getBLANK());
+                    inv.setItem(8, IUIItem.getBLANK());
 
                     break;
                case x2:
                     //下の段のみにボーダーを設定します。
 
-                    for (int i = 9; i < inv.getSize().getCount(); ++i) inv.setItem(i, getBLANK());
+                    for (int i = 9; i < inv.getSize().getCount(); ++i) inv.setItem(i, IUIItem.getBLANK());
 
                     break;
                case x3:
@@ -52,7 +53,7 @@ public class IuiCustomizer extends ItemCreator {
 
                     for (int i = 0; i < inv.getSize().getCount(); ++i) {
                          if (i > 8 && i < inv.getSize().getCount() - 9) continue;
-                         inv.setItem(i, getBLANK());
+                         inv.setItem(i, IUIItem.getBLANK());
                     }
 
                     break;
