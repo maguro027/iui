@@ -1,9 +1,10 @@
 package waterpunch.tool.data.enums;
 
 public enum ItemType {
-     Click,
-     Give,
-     View,
+     CLICK,
+     GIVE,
+     VIEW,
+     COMMAND_TRIGGER,
      ERROR,
      SYSTEM_ITEM,
 }

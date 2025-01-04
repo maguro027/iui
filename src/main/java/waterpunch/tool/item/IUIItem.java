@@ -1,36 +1,80 @@
 package waterpunch.tool.item;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
 
 import waterpunch.tool.data.enums.ItemType;
+import waterpunch.tool.tool.ColoredText;
 
+/**
+ * IUIItemクラスは、インベントリユーザーインターフェース内で使用されるアイテムを表します。
+ * このクラスはItemCreatorクラスを継承し、アイテムのタイプを保持します。
+ * @see ItemCreator
+ * @author maguro027
+ */
 public class IUIItem extends ItemCreator {
 
-     private ItemType type;
+     private final ItemType type = ItemType.VIEW;
 
+     /**
+      * コンストラクタ
+      * @param type アイテムのタイプ
+      * @param material アイテムの素材
+      * @param name アイテムの名前
+      */
      public IUIItem(ItemType type, @Nonnull Material material, String name) {
           super(material, name);
      }
 
+     /**
+      * コンストラクタ
+      * @param type アイテムのタイプ
+      * @param material アイテムの素材
+      * @param name アイテムの名前
+      * @param descriptions アイテムの説明
+      */
      public IUIItem(ItemType type, @Nonnull Material material, String name, String descriptions) {
-          super(material, name);
+          super(material, name, descriptions);
+     }/**
+      * コンストラクタ
+      * @param type アイテムのタイプ
+      * @param material アイテムの素材
+      * @param name アイテムの名前
+      * @param descriptions アイテムの説明
+      */
+
+     public IUIItem(ItemType type, @Nonnull Material material, String name, List<String> descriptions) {
+          super(material, name, descriptions);
      }
 
-     public ItemType getItemType() {
+     /**
+      * アイテムのタイプを取得します。
+      * @return アイテムのタイプ
+      */
+     public ItemType getType() {
           return type;
      }
 
      /**
-      * @see 何らかのエラーが発生したときに使用してください。
+      * エラーアイテムを取得します。
+      * @return エラーアイテム
+      * @see ItemType#SYSTEM_ITEM
+      * @see Material#RED_STAINED_GLASS_PANE
       */
-
      public static IUIItem getERROR() {
-          return new IUIItem(ItemType.SYSTEM_ITEM, Material.RED_STAINED_GLASS_PANE, "\u001b[00;31" + "ERROR" + "\u001b[00;00");
+          return new IUIItem(ItemType.SYSTEM_ITEM, Material.RED_STAINED_GLASS_PANE, ColoredText.setRED("ERROR"));
      }
 
+     /**
+      * 空白アイテムを取得します。
+      * @return インベントリボーダー用のアイテム
+      * @see ItemType#VIEW
+      * @see Material#BLACK_STAINED_GLASS_PANE
+      */
      public static IUIItem getBLANK() {
-          return new IUIItem(ItemType.View, Material.BLACK_STAINED_GLASS_PANE, " ", SYSTEM_ITEM);
+          return new IUIItem(ItemType.VIEW, Material.BLACK_STAINED_GLASS_PANE, " ");
      }
 }

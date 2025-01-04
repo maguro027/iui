@@ -2,13 +2,10 @@ package waterpunch.tool.item;
 
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nonnull;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import waterpunch.tool.tool.ColoredText;
 
 /**
