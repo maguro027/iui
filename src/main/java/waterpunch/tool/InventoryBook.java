@@ -2,9 +2,7 @@ package waterpunch.tool;
 
 import java.util.ArrayList;
 
-import waterpunch.tool.data.enums.Info;
-
-public class InventoryBook extends Info {
+public class InventoryBook {
 
      private final ArrayList<InventoryUserInterface> list = new ArrayList<>();
 

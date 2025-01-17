@@ -1,25 +1,23 @@
 package waterpunch.tool;
 
 import java.util.ArrayList;
-import java.util.Objects;
+
 import javax.annotation.Nonnull;
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.Inventory;
+
 import waterpunch.tool.data.enums.IUISize;
 import waterpunch.tool.data.enums.IUIType;
 import waterpunch.tool.data.enums.Info;
 import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.tool.IuiCustomizer;
 
-public final class InventoryUserInterface {
+public final class InventoryUserInterface extends Info {
 
      private IUISize size = IUISize.x1;
      private IUIType type = IUIType.PRIVATE;
 
      private IuiCustomizer customizer = new IuiCustomizer();
-     private Info info = new Info();
 
-     private Inventory inv = Bukkit.createInventory(null, getSize().getCount(), getInfo().getName());
+     // private Inventory inv = Bukkit.createInventory(null, getSize().getCount(), super.getName());
 
      private ArrayList<IUIItem> items = new ArrayList<>();
 
@@ -29,8 +27,9 @@ public final class InventoryUserInterface {
       * @see InventoryUserInterface#InventoryUserInterface(String)
       * @see InventoryUserInterface#InventoryUserInterface(String, IUISize)
       */
+
      public InventoryUserInterface() {
-          IUIHolder.add(this);
+          super();
      }
 
      /**
@@ -41,8 +40,8 @@ public final class InventoryUserInterface {
       * @see InventoryUserInterface#InventoryUserInterface(String, IUISize)
       */
      public InventoryUserInterface(@Nonnull IUISize size) {
+          super();
           setSize(size);
-          IUIHolder.add(this);
      }
 
      /**
@@ -53,8 +52,7 @@ public final class InventoryUserInterface {
       * @see InventoryUserInterface#InventoryUserInterface(String, IUISize)
       */
      public InventoryUserInterface(@Nonnull String name) {
-          getInfo().setName(name);
-          IUIHolder.add(this);
+          super(name);
      }
 
      /**
@@ -66,9 +64,8 @@ public final class InventoryUserInterface {
       * @see InventoryUserInterface#InventoryUserInterface(String)
       */
      public InventoryUserInterface(String name, @Nonnull IUISize size) {
-          if (!Objects.isNull(name)) getInfo().setName(name);
+          super(name);
           setSize(size);
-          IUIHolder.add(this);
      }
 
      /**
@@ -124,11 +121,10 @@ public final class InventoryUserInterface {
      public void setSize(IUISize size) {
           this.size = size;
 
-          int newSize = size.getCount();
-          if (items.size() > newSize) {
-               items.subList(newSize, items.size()).clear();
+          if (items.size() > size.getCount()) {
+               items.subList(size.getCount(), items.size()).clear();
           } else {
-               while (items.size() < newSize) {
+               while (items.size() < size.getCount()) {
                     items.add(null);
                }
           }
@@ -146,25 +142,14 @@ public final class InventoryUserInterface {
           return type;
      }
 
-     public InventoryUserInterface printInventory() {
-          inv = Bukkit.createInventory(info.getOwner(), size.getCount(), info.getName());
-          customizer.printBorder(this);
-          return this;
-     }
-
      public void setItems(ArrayList<IUIItem> items) {
           this.items = items;
      }
-
-     public Info getInfo() {
-          return info;
-     }
-
-     public void setInfo(Info info) {
-          this.info = info;
-     }
-
-     public int getInvHash() {
-          return inv.hashCode();
-     }
+     //TODO: このメソッドは削除される予定です。IUIServerに移行されます。
+     // @Deprecated
+     // public InventoryUserInterface printInventory() {
+     //      inv = Bukkit.createInventory(super.getOwner(), size.getCount(), super.getName());
+     //      customizer.printBorder(this);
+     //      return this;
+     // }
 }
