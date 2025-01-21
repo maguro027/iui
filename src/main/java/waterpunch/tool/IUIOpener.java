@@ -1,7 +1,8 @@
 package waterpunch.tool;
 
 import java.util.UUID;
-import waterpunch.tool.data.enums.Info;
+
+import waterpunch.tool.data.Info;
 
 public class IUIOpener extends Info {
 

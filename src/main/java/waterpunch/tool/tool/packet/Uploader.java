@@ -1,11 +1,13 @@
 package waterpunch.tool.tool.packet;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import com.google.gson.Gson;
+
 import waterpunch.tool.InventoryUserInterface;
 
 /**
@@ -41,15 +43,18 @@ public class Uploader {
      }
 
      public static void sendIUI(InventoryUserInterface iui) throws IOException {
+          // パケットの作成
+          String json = new Gson().toJson(CreatePaket(iui));
+          byte[] bytes = json.getBytes();
           // ソケットの作成
           try (Socket socket = new Socket(IUI_HOST, IUI_PORT); OutputStream out = socket.getOutputStream()) {
-               String json = new Gson().toJson(iui);
-               byte[] bytes = json.getBytes();
-               // データの送信
                out.write(bytes);
-
                out.close();
                socket.close();
           }
+     }
+
+     public static IUIPacket CreatePaket(InventoryUserInterface iui) {
+          return new IUIUPLoadRequest(iui);
      }
 }

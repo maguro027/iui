@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
+import waterpunch.tool.data.Info;
 import waterpunch.tool.data.enums.IUISize;
 import waterpunch.tool.data.enums.IUIType;
-import waterpunch.tool.data.enums.Info;
 import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.tool.IuiCustomizer;
 
