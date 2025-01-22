@@ -1,5 +1,10 @@
 package waterpunch.tool.tool.packet;
 
+/**
+ * @author maguro027
+ * @version 0.1
+ * このクラスは、IUIサーバーに飛ばすパケットの基底クラスです。
+ */
 public class IUIPacket {
 
      public static String pluginName;
@@ -18,6 +23,7 @@ public class IUIPacket {
      }
 
      public enum PaketType {
+          IUIServerFastConnect,
           IUIUPLoadRequest,
           IUIDeleteRequest,
           IUIListGetRequest,
