@@ -1,5 +1,7 @@
 package waterpunch.tool.tool.packet;
 
+import waterpunch.tool.Core;
+
 /**
  * @author maguro027
  * @version 0.1
@@ -8,21 +10,47 @@ package waterpunch.tool.tool.packet;
 public class IUIPacket {
 
      public static String pluginName;
-     private PaketType type;
+     private PacketType type;
 
-     public IUIPacket(PaketType type) {
+     /**
+      * @param type パケットのタイプ
+      * @see 基底クラスのコンストラクタです。
+      * @see IUIPacket#IUIPacket(PacketType)
+      */
+     public IUIPacket(PacketType type) {
+          pluginName = Core.getPluginName();
+          setPacketType(type);
+     }
+
+     /**
+      * @return プラグインの名前を返します。
+      */
+
+     public String getPluginName() {
+          return pluginName;
+     }
+
+     /**
+      * @param type パケットのタイプ
+      * @see パケットのタイプを指定します。
+      */
+
+     public final void setPacketType(PacketType type) {
           this.type = type;
      }
 
-     public void setPaketType(PaketType type) {
-          this.type = type;
-     }
-
-     public PaketType getType() {
+     /**
+      * @return パケットのタイプを返します。
+      */
+     public PacketType getType() {
           return type;
      }
 
-     public enum PaketType {
+     /**
+      * @see パケットのタイプを指定します。
+      * @param type パケットのタイプ
+      */
+     public enum PacketType {
           IUIServerFastConnect,
           IUIUPLoadRequest,
           IUIDeleteRequest,

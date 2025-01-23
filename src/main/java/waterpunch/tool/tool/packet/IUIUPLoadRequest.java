@@ -12,7 +12,14 @@ public class IUIUPLoadRequest extends IUIPacket {
      private final InventoryUserInterface iui;
 
      public IUIUPLoadRequest(InventoryUserInterface iui) {
-          super(PaketType.IUIUPLoadRequest);
+          super(PacketType.IUIUPLoadRequest);
           this.iui = iui;
+     }
+
+     /**
+      * @return IUIを返します。
+      */
+     public InventoryUserInterface getIUI() {
+          return iui;
      }
 }
