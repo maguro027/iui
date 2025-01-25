@@ -3,7 +3,7 @@ package waterpunch.tool;
 public class Core {
 
      public static String IUI_HOST = "localhost";
-     public static int IUI_PORT = 7500;
+     public static int IUI_PORT = 12345;
 
      public static String iuiversion; //IUIのバージョンを代入してください。
      public static String pluginName; //呼び出し元のプラグイン名を代入してください。

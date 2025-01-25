@@ -9,7 +9,10 @@ import waterpunch.tool.Core;
  */
 public class IUIPacket {
 
-     public static String pluginName;
+     @SuppressWarnings("unused")
+     private final String title = "iuipacket";
+
+     private String pluginName;
      private PacketType type;
 
      /**

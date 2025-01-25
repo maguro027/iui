@@ -17,7 +17,13 @@ import waterpunch.tool.InventoryUserInterface;
  */
 public class Uploader {
 
-     public static void sendPacket(IUIPacket packet) {}
+     public static void main(String[] args) {
+          try {
+               sendPacket(new ServerFirstConnect());
+          } catch (IOException e) {
+               e.printStackTrace();
+          }
+     }
 
      public static byte[] packetConverter(IUIPacket packet) {
           String json = new Gson().toJson(packet);
@@ -26,15 +32,22 @@ public class Uploader {
      }
 
      public static void sendIUI(InventoryUserInterface iui) throws IOException {
-          // ソケットの作成
+          sendPacket(packetConverter(new IUIUPLoadRequest(iui)));
+     }
+
+     private static void sendPacket(byte[] bytes) throws IOException {
           try (Socket socket = new Socket(Core.getHost(), Core.getPort()); OutputStream out = socket.getOutputStream()) {
-               out.write(packetConverter(CreatePacket(iui)));
+               out.write(bytes);
                out.close();
                socket.close();
           }
      }
 
-     public static IUIPacket CreatePacket(InventoryUserInterface iui) {
-          return new IUIUPLoadRequest(iui);
+     private static void sendPacket(IUIPacket packet) throws IOException {
+          try (Socket socket = new Socket(Core.getHost(), Core.getPort()); OutputStream out = socket.getOutputStream()) {
+               out.write(packetConverter(packet));
+               out.close();
+               socket.close();
+          }
      }
 }
