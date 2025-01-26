@@ -10,7 +10,6 @@ import waterpunch.tool.Core;
  */
 public final class ServerFirstConnect extends IUIPacket {
 
-     private String iuiversion;
      private String version;
 
      /**
@@ -21,21 +20,6 @@ public final class ServerFirstConnect extends IUIPacket {
      public ServerFirstConnect() {
           super(PacketType.IUIServerFastConnect);
           setIUIVersion(Core.getIUIVersion());
-          setVersion(Core.getVersion());
-     }
-
-     /**
-      * @param version 継承元のバージョン情報
-      */
-     public void setVersion(String version) {
-          this.version = version;
-     }
-
-     /**
-      * @return 継承元のバージョン情報を返します。
-      */
-     public String getVersion() {
-          return version;
      }
 
      /**
@@ -49,6 +33,6 @@ public final class ServerFirstConnect extends IUIPacket {
       * @return IUIのバージョン情報を返します。
       */
      public String getIUIVersion() {
-          return iuiversion;
+          return version;
      }
 }

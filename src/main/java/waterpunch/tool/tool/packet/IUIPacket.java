@@ -1,5 +1,6 @@
 package waterpunch.tool.tool.packet;
 
+import java.io.IOException;
 import waterpunch.tool.Core;
 
 /**
@@ -7,13 +8,14 @@ import waterpunch.tool.Core;
  * @version 0.1
  * このクラスは、IUIサーバーに飛ばすパケットの基底クラスです。
  */
-public class IUIPacket {
+public class IUIPacket extends PacketSender {
 
      @SuppressWarnings("unused")
      private final String title = "iuipacket";
 
-     private String pluginName;
      private PacketType type;
+
+     private final String pluginName;
 
      /**
       * @param type パケットのタイプ
@@ -23,6 +25,14 @@ public class IUIPacket {
      public IUIPacket(PacketType type) {
           pluginName = Core.getPluginName();
           setPacketType(type);
+     }
+
+     public String sendPacket() {
+          try {
+               return sendPacket(this);
+          } catch (IOException e) {
+               return null;
+          }
      }
 
      /**
@@ -54,6 +64,7 @@ public class IUIPacket {
       * @param type パケットのタイプ
       */
      public enum PacketType {
+          IUISERVERRESPONSE,
           IUIServerFastConnect,
           IUIUPLoadRequest,
           IUIDeleteRequest,
