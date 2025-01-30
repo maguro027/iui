@@ -1,4 +1,4 @@
-package waterpunch.tool.tool.packet;
+package waterpunch.tool.server.packet.client;
 
 import waterpunch.tool.InventoryUserInterface;
 
@@ -7,12 +7,12 @@ import waterpunch.tool.InventoryUserInterface;
  * @version 0.1
  * このクラスは、IUIサーバーにIUIをアップロードするリクエストを送信するためのクラスです。
  */
-public class IUIUPLoadRequest extends IUIPacket {
+public class IUIUPLoadRequest extends ClientPacket {
 
      private final InventoryUserInterface iui;
 
      public IUIUPLoadRequest(InventoryUserInterface iui) {
-          super(PacketType.IUIUPLoadRequest);
+          super(ClientPacketType.IUIUPLoadRequest);
           this.iui = iui;
      }
 

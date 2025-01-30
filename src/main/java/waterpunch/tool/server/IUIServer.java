@@ -1,4 +1,4 @@
-package waterpunch.tool.tool.packet;
+package waterpunch.tool.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import waterpunch.tool.server.packet.IUIPacket;
 
 public class IUIServer {
 

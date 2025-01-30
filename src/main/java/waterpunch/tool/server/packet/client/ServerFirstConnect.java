@@ -1,4 +1,4 @@
-package waterpunch.tool.tool.packet;
+package waterpunch.tool.server.packet.client;
 
 import waterpunch.tool.Core;
 
@@ -8,17 +8,16 @@ import waterpunch.tool.Core;
  * このクラスは、サーバーに最初に接続するためのパケットです。
  * ポートやIUIのバージョン情報を送信します。
  */
-public final class ServerFirstConnect extends IUIPacket {
+public final class ServerFirstConnect extends ClientPacket {
 
      private String version;
 
      /**
-      * サイズを指定するコンストラクタ
       * 内部の変数は送信用なので、内容取得等は不要です。
       * @see サーバーとの初回通信用のパケットです。
       */
      public ServerFirstConnect() {
-          super(PacketType.IUIServerFastConnect);
+          super(ClientPacketType.IUIServerFastConnect);
           setIUIVersion(Core.getIUIVersion());
      }
 

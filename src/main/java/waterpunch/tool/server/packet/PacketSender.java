@@ -1,4 +1,4 @@
-package waterpunch.tool.tool.packet;
+package waterpunch.tool.server.packet;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import waterpunch.tool.Core;
 import waterpunch.tool.InventoryUserInterface;
+import waterpunch.tool.server.packet.client.IUIUPLoadRequest;
 
 /**
  * @author maguro027
@@ -40,8 +41,7 @@ public class PacketSender {
                out.flush();
 
                // サーバーからの応答を受信
-               String response = in.readLine();
-               return response;
+               return in.readLine();
           }
      }
 }
