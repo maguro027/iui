@@ -7,7 +7,7 @@ public class Core {
 
      public static String iuiversion; //IUIのバージョンを代入してください。
      public static String pluginName; //呼び出し元のプラグイン名を代入してください。
-     public static String version; //呼び出し元のプラグインのバージョンを代入してください。
+     public static String version = "0.1"; //呼び出し元のプラグインのバージョンを代入してください。
 
      public static void setHost(String host) {
           IUI_HOST = host;
