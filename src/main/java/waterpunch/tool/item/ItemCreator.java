@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import waterpunch.tool.tool.ColoredText;
+import waterpunch.tool.tool.messeage.ColoredText;
 
 /**
  *  @author maguro027

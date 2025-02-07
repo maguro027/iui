@@ -1,13 +1,11 @@
 package waterpunch.tool.server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 import waterpunch.tool.server.packet.IUIPacket;
 import waterpunch.tool.server.packet.client.ClientPacket;
 
@@ -37,6 +35,7 @@ public class IUIServer {
                     ClientPacket Packet = gson.fromJson(receivedData, ClientPacket.class);
                } catch (JsonSyntaxException e) {
                     //TODO ログシステムの追加、ClientPacket以外が送信された場合にサーバーログに記録する
+                    // ErrorMessenger.UnknownPacketType.getMessage();
                     clientSocket.close();
                }
 
