@@ -1,9 +1,15 @@
 package waterpunch.tool.tool.messeage;
 
+/**
+ *  @author maguro027
+ */
 public class ErrorMessenger extends Messenger {
 
-     ErrorMessenger(ErrorType type) {
-          encodeLog(type.getMessage());
+     private String incidentDay;
+
+     public ErrorMessenger(ErrorType type) {
+          super(type.getMessage());
+          this.incidentDay = getCurrentTime();
      }
 
      public enum ErrorType {

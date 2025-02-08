@@ -3,23 +3,33 @@ package waterpunch.tool.tool.messeage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ *  @author maguro027
+ *  @version 0.1
+ *  このクラスはログの出力用クラスです。
+ *　主に、日時やメッセージのエンコードを行います。
+ */
 public class Messenger extends ColoredText {
 
-     public static void main(String[] str) {
+     private String messeage = "DEFAULT";
 
+     public static void main(String[] str) {
           //TODO テスト用のコードです
 
-          String testMessage = "This is a test message.";
-          String timestamp = getCurrentTime();
-          encodeLog("[" + timestamp + "] " + testMessage);
+          Messenger messenger = new Messenger("This is a test message");
+          System.out.println(messenger.encodeLog());
      }
 
-     public static void encodeLog(String str) {
-          System.out.println(str);
+     public Messenger(String message) {
+          this.messeage = message;
      }
 
-     public static String getCurrentTime() {
+     public String getCurrentTime() {
           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           return sdf.format(new Date());
+     }
+
+     public String encodeLog() {
+          return "[" + getCurrentTime() + "] " + messeage;
      }
 }
