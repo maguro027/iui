@@ -1,13 +1,16 @@
 package waterpunch.tool.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import waterpunch.tool.server.packet.IUIPacket;
 import waterpunch.tool.server.packet.client.ClientPacket;
+import waterpunch.tool.tool.messeage.errorreport.BADPacketError;
 
 public class IUIServer {
 
@@ -29,18 +32,22 @@ public class IUIServer {
                int bytesRead = clientSocket.getInputStream().read(buffer);
                String receivedData = new String(buffer, 0, bytesRead);
                System.out.println("受信データ: " + receivedData);
-
+               System.out.println("送信者のIP: " + clientSocket.getInetAddress().getHostAddress());
+               System.out.println("送信者のポート: " + clientSocket.getPort());
                try {
                     Gson gson = new Gson();
                     ClientPacket Packet = gson.fromJson(receivedData, ClientPacket.class);
                } catch (JsonSyntaxException e) {
                     //TODO ログシステムの追加、ClientPacket以外が送信された場合にサーバーログに記録する
                     // ErrorMessenger.UnknownPacketType.getMessage();
+
+                    BADPacketError error = new BADPacketError(clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort(), receivedData);
+                    System.out.println(error.encodeLog());
                     clientSocket.close();
                }
 
                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-               out.println("response");
+               out.println("responseだよ");
                // 接続を閉じる
                clientSocket.close();
           }
