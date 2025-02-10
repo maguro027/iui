@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
-
 import waterpunch.tool.Core;
 import waterpunch.tool.InventoryUserInterface;
 import waterpunch.tool.server.packet.IUIPacket;
@@ -63,27 +62,30 @@ public class ClientPacket extends IUIPacket {
           IUIDeleteRequest,
           IUIListGetRequest,
           IUIGetRequest,
+          IUIItemUPLoadRequest,
      }
 
      public void sendIUI(InventoryUserInterface iui) throws IOException {
           sendPacket(packetConverter(new IUIUPLoadRequest(iui)));
      }
 
-     public String sendPacket() throws IOException {
+     public String sendPacket() {
           return send(packetConverter(this));
      }
 
-     public String sendPacket(byte[] bytes) throws IOException {
+     public String sendPacket(byte[] bytes) {
           return send(bytes);
      }
 
-     private String send(byte[] bytes) throws IOException {
+     private String send(byte[] bytes) {
           try (Socket socket = new Socket(Core.getHost(), Core.getPort()); OutputStream out = socket.getOutputStream(); BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                out.write(bytes);
                out.flush();
 
                // サーバーからの応答を受信
                return in.readLine();
+          } catch (IOException e) {
+               return null;
           }
      }
 }

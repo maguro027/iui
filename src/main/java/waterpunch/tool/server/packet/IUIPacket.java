@@ -1,7 +1,6 @@
 package waterpunch.tool.server.packet;
 
 import com.google.gson.Gson;
-
 import waterpunch.tool.Core;
 
 /**
@@ -14,7 +13,7 @@ public class IUIPacket {
      @SuppressWarnings("unused")
      private final String title = "iuipacket";
 
-     private String version;
+     private final String version;
 
      /**
       * @param type パケットのタイプ
@@ -32,7 +31,6 @@ public class IUIPacket {
      public String getVersion() {
           return version;
      }
-
 
      public byte[] packetConverter(IUIPacket packet) {
           String json = new Gson().toJson(packet);

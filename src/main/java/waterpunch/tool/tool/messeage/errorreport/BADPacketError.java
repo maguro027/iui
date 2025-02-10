@@ -7,7 +7,7 @@ public class BADPacketError extends ErrorMessenger {
      private final String packetData;
 
      public BADPacketError(String senderIP, int senderPort, String packetData) {
-          super(ErrorType.badPacketType);
+          super(ErrorType.BADPacket);
           this.senderIP = senderIP;
           this.senderPort = senderPort;
           this.packetData = packetData;
