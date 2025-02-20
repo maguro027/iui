@@ -10,6 +10,7 @@ import waterpunch.tool.server.packet.IUIPacket;
 import waterpunch.tool.server.packet.client.ClientPacket;
 import waterpunch.tool.server.packet.client.IUIItemUPLoadRequest;
 import waterpunch.tool.tool.messeage.errorreport.BADPacketError;
+import waterpunch.tool.tool.messeage.errorreport.BADPacketError.BadPacketType;
 
 public class IUIServer {
 
@@ -25,6 +26,7 @@ public class IUIServer {
           while (true) {
                try (Socket clientSocket = serverSocket.accept()) {
                     System.out.println("クライアントからの接続を受け付けました");
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                     // ここで受信したパケットの処理を行う
                     byte[] buffer = new byte[1024];
                     int bytesRead = clientSocket.getInputStream().read(buffer);
@@ -32,17 +34,23 @@ public class IUIServer {
                     try {
                          Gson gson = new Gson();
                          ClientPacket Packet = gson.fromJson(receivedData, ClientPacket.class);
-                         BADPacketError error = new BADPacketError(clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort(), receivedData);
-                         System.out.println(error.encodeLog());
+                         if (Packet.getPluginName().equals("DEFAULT")) {
+                              //ErrorTEST
+                              BADPacketError error = new BADPacketError(BadPacketType.DEFAULTPluginName, clientSocket, receivedData);
+                              System.out.println(error.encodeLog());
+                              out.println(error);
+                              clientSocket.close();
+                         }
+                         //ここまで
 
                          if (Packet instanceof IUIItemUPLoadRequest) {}
                     } catch (JsonSyntaxException e) {
                          //TODO ログシステムの追加、ClientPacket以外が送信された場合にサーバーログに記録する
-                         // ErrorMessenger.UnknownPacketType.getMessage();
+                         // ErrorMessenger.UnknownPacketType.getMessage();0
 
                          clientSocket.close();
                     }
-                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
                     out.println("responseだよ");
                     // 接続を閉じる
                }

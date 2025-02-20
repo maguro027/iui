@@ -1,15 +1,19 @@
 package waterpunch.tool.tool.messeage.errorreport;
 
+import java.net.Socket;
+
 public class BADPacketError extends ErrorMessenger {
 
+     private final BadPacketType BadPacketType;
      private final String senderIP;
      private final int senderPort;
      private final String packetData;
 
-     public BADPacketError(String senderIP, int senderPort, String packetData) {
+     public BADPacketError(BadPacketType BadPacketType, Socket socket, String packetData) {
           super(ErrorType.BADPacket);
-          this.senderIP = senderIP;
-          this.senderPort = senderPort;
+          this.BadPacketType = BadPacketType;
+          this.senderIP = socket.getInetAddress().getHostAddress();
+          this.senderPort = socket.getPort();
           this.packetData = packetData;
      }
 
@@ -23,6 +27,25 @@ public class BADPacketError extends ErrorMessenger {
 
      public String getPacketData() {
           return packetData;
+     }
+
+     public BadPacketType getBadPacketType() {
+          return BadPacketType;
+     }
+
+     public enum BadPacketType {
+          DEFAULTPluginName(setRED("プラグインネームが設定されていません。")),
+          BADRequest(setRED("その操作は許可されていません。"));
+
+          private final String message;
+
+          BadPacketType(String message) {
+               this.message = message;
+          }
+
+          public String getMessage() {
+               return message;
+          }
      }
 
      @Override

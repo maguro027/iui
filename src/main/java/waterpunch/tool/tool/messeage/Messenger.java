@@ -2,7 +2,6 @@ package waterpunch.tool.tool.messeage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import waterpunch.tool.tool.messeage.errorreport.BADPacketError;
 
 /**
  *  @author maguro027
@@ -14,17 +13,16 @@ public class Messenger extends ColoredText {
 
      private String messeage = "DEFAULT";
 
-     public static void main(String[] str) {
-          //TODO テスト用のコードです
-
-          Messenger messenger = new Messenger("This is a test message");
-          System.out.println(messenger.encodeLog());
-          BADPacketError error = new BADPacketError("123.456.789", 123456, "This is a test message");
-          System.out.println(error.encodeLog());
+     public Messenger(String message) {
+          setMesseage(message);
      }
 
-     public Messenger(String message) {
-          this.messeage = message;
+     public final void setMesseage(String messeage) {
+          this.messeage = messeage;
+     }
+
+     public String getMesseage() {
+          return messeage;
      }
 
      public String getCurrentTime() {

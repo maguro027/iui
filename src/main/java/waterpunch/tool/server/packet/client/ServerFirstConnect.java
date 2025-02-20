@@ -9,7 +9,6 @@ package waterpunch.tool.server.packet.client;
 public final class ServerFirstConnect extends ClientPacket {
 
      /**
-      * 内部の変数は送信用なので、内容取得等は不要です。
       * @see サーバーとの初回通信用のパケットです。
       */
      public ServerFirstConnect() {
