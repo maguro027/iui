@@ -1,6 +1,10 @@
 package waterpunch.tool.server.packet;
 
+import java.nio.charset.StandardCharsets;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import waterpunch.tool.Core;
 
 /**
@@ -33,7 +37,8 @@ public class IUIPacket {
      }
 
      public byte[] packetConverter(IUIPacket packet) {
-          String json = new Gson().toJson(packet);
-          return json.getBytes();
+          Gson gson = new GsonBuilder().serializeNulls().create();
+          String json = gson.toJson(packet);
+          return json.getBytes(StandardCharsets.UTF_8);
      }
 }

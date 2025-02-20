@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+
 import waterpunch.tool.Core;
 import waterpunch.tool.InventoryUserInterface;
 import waterpunch.tool.server.packet.IUIPacket;
@@ -17,7 +18,7 @@ import waterpunch.tool.server.packet.IUIPacket;
 public class ClientPacket extends IUIPacket {
 
      private ClientPacketType type = ClientPacketType.PING;
-     private String pluginName = "DEFAULT";
+     private String pluginName;
 
      public ClientPacket(ClientPacketType type) {
           super();

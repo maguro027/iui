@@ -1,11 +1,13 @@
 package waterpunch.tool.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import waterpunch.tool.server.packet.IUIPacket;
 import waterpunch.tool.server.packet.client.ClientPacket;
 import waterpunch.tool.server.packet.client.IUIItemUPLoadRequest;
@@ -34,6 +36,7 @@ public class IUIServer {
                     try {
                          Gson gson = new Gson();
                          ClientPacket Packet = gson.fromJson(receivedData, ClientPacket.class);
+                         System.out.println(receivedData);
                          if (Packet.getPluginName().equals("DEFAULT")) {
                               //ErrorTEST
                               BADPacketError error = new BADPacketError(BadPacketType.DEFAULTPluginName, clientSocket, receivedData);
