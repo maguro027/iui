@@ -145,11 +145,4 @@ public final class InventoryUserInterface extends Info {
      public void setItems(ArrayList<IUIItem> items) {
           this.items = items;
      }
-     //TODO: このメソッドは削除される予定です。IUIServerに移行されます。
-     // @Deprecated
-     // public InventoryUserInterface printInventory() {
-     //      inv = Bukkit.createInventory(super.getOwner(), size.getCount(), super.getName());
-     //      customizer.printBorder(this);
-     //      return this;
-     // }
 }

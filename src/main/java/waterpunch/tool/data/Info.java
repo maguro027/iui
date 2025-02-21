@@ -9,7 +9,7 @@ public class Info {
 
      private String name = "DEFAULT";
      private UUID owner;
-     private UUID iuiid;
+     private UUID id;
 
      public Info() {
           createID();
@@ -41,14 +41,14 @@ public class Info {
      }
 
      public void setID(UUID id) {
-          this.iuiid = id;
+          this.id = id;
      }
 
      private void createID() {
-          this.iuiid = UUID.randomUUID();
+          this.id = UUID.randomUUID();
      }
 
-     public UUID getIUIID() {
-          return iuiid;
+     public UUID getID() {
+          return id;
      }
 }

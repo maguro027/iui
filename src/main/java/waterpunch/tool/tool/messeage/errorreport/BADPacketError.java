@@ -34,7 +34,7 @@ public class BADPacketError extends ErrorMessenger {
      }
 
      public enum BadPacketType {
-          DEFAULTPluginName(setRED("プラグインネームが設定されていません。")),
+          BADPluginName(setRED("不正な名前が設定されています。")),
           BADRequest(setRED("その操作は許可されていません。"));
 
           private final String message;

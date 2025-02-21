@@ -5,9 +5,9 @@ public class Core {
      public static String IUI_HOST = "localhost";
      public static int IUI_PORT = 12345;
 
-     public static String iuiversion; //IUIのバージョンを代入してください。
+     public static String iuiversion = "0.1A"; //IUIのバージョンを代入してください。
      public static String pluginName = "DEFAULT"; //呼び出し元のプラグイン名を代入してください。
-     public static String version = "0.1"; //呼び出し元のプラグインのバージョンを代入してください。
+     public static String version = "0"; //呼び出し元のプラグインのバージョンを代入してください。
 
      public static void setHost(String host) {
           IUI_HOST = host;
