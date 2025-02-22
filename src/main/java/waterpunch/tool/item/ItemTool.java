@@ -9,7 +9,6 @@ public class ItemTool {
       * @param items アイテムリスト
       * @param target 対象のアイテム
       * @return アイテムが存在しない場合はtrue、存在する場合はfalse
-
       */
      public static boolean checkItemList(ArrayList<IUIItem> items, IUIItem target) {
           for (IUIItem item : items) {

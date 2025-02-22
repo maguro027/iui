@@ -1,21 +1,19 @@
 package waterpunch.tool.server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
+import waterpunch.tool.IUITool;
 import waterpunch.tool.InventoryUserInterface;
 import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.item.ItemTool;
 import waterpunch.tool.server.packet.client.ClientPacket;
-import waterpunch.tool.server.packet.client.IUIItemUPLoadRequest;
-import waterpunch.tool.server.packet.client.IUIUPLoadRequest;
+import waterpunch.tool.server.packet.client.ClientPacket.ClientPacketType;
 import waterpunch.tool.server.packet.client.ServerFirstConnect;
 import waterpunch.tool.tool.messeage.errorreport.BADPacketError;
 import waterpunch.tool.tool.messeage.errorreport.BADPacketError.BadPacketType;
@@ -46,37 +44,16 @@ public class IUIServer {
                     String receivedData = new String(buffer, 0, bytesRead);
                     try {
                          Gson gson = new Gson();
-                         ClientPacket Packet = gson.fromJson(receivedData, ClientPacket.class);
+                         ClientPacket packet = gson.fromJson(receivedData, ClientPacket.class);
                          System.out.println(receivedData);
 
                          // パケットの解析、プラグインの名前などがデフォルトだとエラーを返します。
-                         if (Packet.getPluginName().equals("DEFAULT") || Packet.getPluginName().isEmpty()) {
+                         if (packet.getPluginName().equals("DEFAULT") || packet.getPluginName().isEmpty()) {
                               BADPacketError error = new BADPacketError(BadPacketType.BADPluginName, clientSocket, receivedData);
                               out.println(error);
                               clientSocket.close();
                          }
-                         if (Packet instanceof ServerFirstConnect) {
-                              ServerFirstConnect serverFirstConnect = (ServerFirstConnect) Packet;
-                              //ConnectionServersにサーバーの名前を追加します。
-                              connectionServers.add(serverFirstConnect.getPluginName());
-                              if (!serverFirstConnect.getIUIs().isEmpty()) {
-                                   //TODO IUIが重複すると思うので、IUIの重複を防ぐ処理を追加する
-                                   iuis.put(serverFirstConnect.getPluginName(), serverFirstConnect.getIUIs());
-                              }
-                              //アイテムを登録してます
-                              if (!serverFirstConnect.getItems().isEmpty()) {
-                                   for (IUIItem item : serverFirstConnect.getItems()) {
-                                        if (ItemTool.checkItemList(items.get(serverFirstConnect.getPluginName()), item)) {
-                                             items.put(serverFirstConnect.getPluginName(), serverFirstConnect.getItems());
-                                        }
-                                   }
-                              }
-                              out.println(true);
-                              clientSocket.close();
-                         }
-
-                         if (Packet instanceof IUIItemUPLoadRequest) {}
-                         if (Packet instanceof IUIUPLoadRequest) {}
+                         packetSwitcher(packet.getType(), receivedData, clientSocket, out);
                     } catch (JsonSyntaxException e) {
                          //TODO ログシステムの追加、ClientPacket以外が送信された場合にサーバーログに記録する
                          // ErrorMessenger.UnknownPacketType.getMessage();0
@@ -94,5 +71,59 @@ public class IUIServer {
           connectionServers.clear();
           iuis.clear();
           items.clear();
+     }
+
+     public static void packetSwitcher(ClientPacketType type, String data, Socket clientSocket, PrintWriter out) {
+          Gson gson = new Gson();
+          switch (type) {
+               case IUIDeleteRequest:
+                    break;
+               case IUIGetRequest:
+                    break;
+               case IUIItemUPLoadRequest:
+                    break;
+               case IUIListGetRequest:
+                    break;
+               case IUISERVERRESPONSE:
+                    break;
+               case IUIServerFastConnect:
+                    try {
+                         ServerFirstConnect serverFirstConnect = gson.fromJson(data, ServerFirstConnect.class);
+                         //ConnectionServersにサーバーの名前を追加します。
+                         connectionServers.add(serverFirstConnect.getPluginName());
+                         //IUIを登録してます
+                         if (!serverFirstConnect.getIUIs().isEmpty()) {
+                              for (InventoryUserInterface iui : serverFirstConnect.getIUIs()) {
+                                   if (IUITool.checkIUIList(iuis.get(serverFirstConnect.getPluginName()), iui)) {
+                                        iuis.put(serverFirstConnect.getPluginName(), serverFirstConnect.getIUIs());
+                                   }
+                              }
+                         }
+                         //アイテムを登録してます
+                         if (!serverFirstConnect.getItems().isEmpty()) {
+                              for (IUIItem item : serverFirstConnect.getItems()) {
+                                   if (ItemTool.checkItemList(items.get(serverFirstConnect.getPluginName()), item)) {
+                                        items.put(serverFirstConnect.getPluginName(), serverFirstConnect.getItems());
+                                   }
+                              }
+                         }
+                         out.println(true);
+                    } catch (JsonSyntaxException e) {
+                         // デシリアライズに失敗した場合の処理
+                         System.err.println("パケットのデシリアライズに失敗しました: " + e.getMessage());
+                         out.println(returnBadPacketError(clientSocket, data));
+                    }
+                    break;
+               case IUIUPLoadRequest:
+                    break;
+               case PING:
+                    break;
+               default:
+                    break;
+          }
+     }
+
+     static BADPacketError returnBadPacketError(Socket socket, String packetData) {
+          return new BADPacketError(BadPacketType.CrushPacket, socket, packetData);
      }
 }

@@ -35,6 +35,7 @@ public class BADPacketError extends ErrorMessenger {
 
      public enum BadPacketType {
           BADPluginName(setRED("不正な名前が設定されています。")),
+          CrushPacket(setRED("パケットが壊れています。")),
           BADRequest(setRED("その操作は許可されていません。"));
 
           private final String message;

@@ -6,6 +6,7 @@ import waterpunch.tool.server.packet.client.ServerFirstConnect;
 public class TestSpeace {
 
      public static void main(String[] args) {
+          Core.setPluginName("TESTNAME");
           ClientPacket packet = new ServerFirstConnect();
           String result;
 
