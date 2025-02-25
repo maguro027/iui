@@ -1,10 +1,8 @@
 package waterpunch.tool.server.packet;
 
-import java.nio.charset.StandardCharsets;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import java.nio.charset.StandardCharsets;
 import waterpunch.tool.Core;
 
 /**
@@ -15,7 +13,7 @@ import waterpunch.tool.Core;
 public class IUIPacket {
 
      @SuppressWarnings("unused")
-     private final String title = "iuipacket";
+     private final String title = "IUI";
 
      private final String version;
 

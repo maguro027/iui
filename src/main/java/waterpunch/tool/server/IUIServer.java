@@ -1,13 +1,15 @@
 package waterpunch.tool.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import waterpunch.tool.IUITool;
 import waterpunch.tool.InventoryUserInterface;
 import waterpunch.tool.item.IUIItem;
@@ -15,9 +17,13 @@ import waterpunch.tool.item.ItemTool;
 import waterpunch.tool.server.packet.client.ClientPacket;
 import waterpunch.tool.server.packet.client.ClientPacket.ClientPacketType;
 import waterpunch.tool.server.packet.client.ServerFirstConnect;
-import waterpunch.tool.tool.messeage.errorreport.BADPacketError;
-import waterpunch.tool.tool.messeage.errorreport.BADPacketError.BadPacketType;
+import waterpunch.tool.server.packet.server.errors.BadRequest;
+import waterpunch.tool.tool.messeage.errorreport.BADPacketErrorReport;
 
+/**
+ * @author maguro027
+ * @version 0.1
+ */
 public class IUIServer {
 
      static final ArrayList<String> connectionServers = new ArrayList<>();
@@ -49,8 +55,9 @@ public class IUIServer {
 
                          // パケットの解析、プラグインの名前などがデフォルトだとエラーを返します。
                          if (packet.getPluginName().equals("DEFAULT") || packet.getPluginName().isEmpty()) {
-                              BADPacketError error = new BADPacketError(BadPacketType.BADPluginName, clientSocket, receivedData);
-                              out.println(error);
+                              BadRequest errorPacket = new BadRequest(BadRequest.BadPacketType.BADPluginName);
+                              BADPacketErrorReport errorReport = new BADPacketErrorReport(errorPacket, receivedData, clientSocket);
+                              out.println(errorReport.encodeLog());
                               clientSocket.close();
                          }
                          packetSwitcher(packet.getType(), receivedData, clientSocket, out);
@@ -73,7 +80,7 @@ public class IUIServer {
           items.clear();
      }
 
-     public static void packetSwitcher(ClientPacketType type, String data, Socket clientSocket, PrintWriter out) {
+     public static void packetSwitcher(ClientPacketType type, String data, Socket socket, PrintWriter out) {
           Gson gson = new Gson();
           switch (type) {
                case IUIDeleteRequest:
@@ -90,6 +97,21 @@ public class IUIServer {
                     try {
                          ServerFirstConnect serverFirstConnect = gson.fromJson(data, ServerFirstConnect.class);
                          //ConnectionServersにサーバーの名前を追加します。
+                         if (connectionServers.contains(serverFirstConnect.getPluginName())) {
+                              //既に登録されている場合はエラーを返し、ソケットを閉じます。
+                              BadRequest errorPacket = new BadRequest(BadRequest.BadPacketType.ExistingName);
+                              BADPacketErrorReport errorReport = new BADPacketErrorReport(errorPacket, data, socket);
+                              out.println(errorReport.encodeLog());
+                              System.out.println(errorReport.encodeLog());
+                              // out.println(new BADPacketErrorReport(socket, data));
+                              try {
+                                   //ソケット閉じるのエラー起きるって致命的じゃない...?
+                                   //発生状況が気になる。
+                                   socket.close();
+                              } catch (IOException ex) {
+                                   System.err.println("ソケットのクローズに失敗しました: " + ex.getMessage());
+                              }
+                         }
                          connectionServers.add(serverFirstConnect.getPluginName());
                          //IUIを登録してます
                          if (!serverFirstConnect.getIUIs().isEmpty()) {
@@ -111,7 +133,6 @@ public class IUIServer {
                     } catch (JsonSyntaxException e) {
                          // デシリアライズに失敗した場合の処理
                          System.err.println("パケットのデシリアライズに失敗しました: " + e.getMessage());
-                         out.println(returnBadPacketError(clientSocket, data));
                     }
                     break;
                case IUIUPLoadRequest:
@@ -121,9 +142,5 @@ public class IUIServer {
                default:
                     break;
           }
-     }
-
-     static BADPacketError returnBadPacketError(Socket socket, String packetData) {
-          return new BADPacketError(BadPacketType.CrushPacket, socket, packetData);
      }
 }
