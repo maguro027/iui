@@ -1,11 +1,8 @@
 package waterpunch.tool.item;
 
 import java.util.List;
-
 import javax.annotation.Nonnull;
-
 import org.bukkit.Material;
-
 import waterpunch.tool.data.enums.ItemType;
 import waterpunch.tool.tool.messeage.ColoredText;
 
@@ -25,7 +22,7 @@ public class IUIItem extends ItemCreator {
       * @param material アイテムの素材
       * @param name アイテムの名前
       */
-     public IUIItem(ItemType type, @Nonnull Material material, String name) {
+     public IUIItem(ItemType type, Material material, String name) {
           super(material, name);
      }
 

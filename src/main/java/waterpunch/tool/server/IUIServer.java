@@ -1,15 +1,13 @@
 package waterpunch.tool.server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 import waterpunch.tool.IUITool;
 import waterpunch.tool.InventoryUserInterface;
 import waterpunch.tool.item.IUIItem;
@@ -18,6 +16,8 @@ import waterpunch.tool.server.packet.client.ClientPacket;
 import waterpunch.tool.server.packet.client.ClientPacket.ClientPacketType;
 import waterpunch.tool.server.packet.client.ServerFirstConnect;
 import waterpunch.tool.server.packet.server.errors.BadRequest;
+import waterpunch.tool.tool.messeage.ColoredText;
+import waterpunch.tool.tool.messeage.Messenger;
 import waterpunch.tool.tool.messeage.errorreport.BADPacketErrorReport;
 
 /**
@@ -42,7 +42,8 @@ public class IUIServer {
 
           while (true) {
                try (Socket clientSocket = serverSocket.accept()) {
-                    System.out.println("クライアントからの接続を受け付けました");
+                    // System.out.println("クライアントからの接続を受け付けました");
+
                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                     // ここで受信したパケットの処理を行う
                     byte[] buffer = new byte[1024];
@@ -51,6 +52,7 @@ public class IUIServer {
                     try {
                          Gson gson = new Gson();
                          ClientPacket packet = gson.fromJson(receivedData, ClientPacket.class);
+
                          System.out.println(receivedData);
 
                          // パケットの解析、プラグインの名前などがデフォルトだとエラーを返します。
@@ -60,11 +62,15 @@ public class IUIServer {
                               out.println(errorReport.encodeLog());
                               clientSocket.close();
                          }
-                         packetSwitcher(packet.getType(), receivedData, clientSocket, out);
+                         if (!packetSwitcher(packet.getType(), receivedData, clientSocket, out)) clientSocket.close();
                     } catch (JsonSyntaxException e) {
                          //TODO ログシステムの追加、ClientPacket以外が送信された場合にサーバーログに記録する
                          // ErrorMessenger.UnknownPacketType.getMessage();0
 
+                         clientSocket.close();
+                    } catch (Exception e) {
+                         //TODO ログシステムの追加、不明なエラーが発生した場合にサーバーログに記録する
+                         // ErrorMessenger.UnknownError.getMessage();
                          clientSocket.close();
                     }
 
@@ -80,7 +86,7 @@ public class IUIServer {
           items.clear();
      }
 
-     public static void packetSwitcher(ClientPacketType type, String data, Socket socket, PrintWriter out) {
+     public static boolean packetSwitcher(ClientPacketType type, String data, Socket socket, PrintWriter out) {
           Gson gson = new Gson();
           switch (type) {
                case IUIDeleteRequest:
@@ -96,22 +102,19 @@ public class IUIServer {
                case IUIServerFastConnect:
                     try {
                          ServerFirstConnect serverFirstConnect = gson.fromJson(data, ServerFirstConnect.class);
+
                          //ConnectionServersにサーバーの名前を追加します。
+                         System.out.println(new Messenger("Get ServerFirstConnect... from " + serverFirstConnect.getPluginName()).encodeLog());
+
                          if (connectionServers.contains(serverFirstConnect.getPluginName())) {
-                              //既に登録されている場合はエラーを返し、ソケットを閉じます。
+                              System.out.println(new Messenger(serverFirstConnect.getPluginName() + " Registere " + ColoredText.setRED("Failure.")).encodeLog());
                               BadRequest errorPacket = new BadRequest(BadRequest.BadPacketType.ExistingName);
                               BADPacketErrorReport errorReport = new BADPacketErrorReport(errorPacket, data, socket);
                               out.println(errorReport.encodeLog());
                               System.out.println(errorReport.encodeLog());
-                              // out.println(new BADPacketErrorReport(socket, data));
-                              try {
-                                   //ソケット閉じるのエラー起きるって致命的じゃない...?
-                                   //発生状況が気になる。
-                                   socket.close();
-                              } catch (IOException ex) {
-                                   System.err.println("ソケットのクローズに失敗しました: " + ex.getMessage());
-                              }
+                              return false;
                          }
+                         System.out.println(new Messenger(serverFirstConnect.getPluginName() + " Registere " + ColoredText.setGREEN("Success.")).encodeLog());
                          connectionServers.add(serverFirstConnect.getPluginName());
                          //IUIを登録してます
                          if (!serverFirstConnect.getIUIs().isEmpty()) {
@@ -130,6 +133,7 @@ public class IUIServer {
                               }
                          }
                          out.println(true);
+                         return true;
                     } catch (JsonSyntaxException e) {
                          // デシリアライズに失敗した場合の処理
                          System.err.println("パケットのデシリアライズに失敗しました: " + e.getMessage());
@@ -142,5 +146,6 @@ public class IUIServer {
                default:
                     break;
           }
+          return false;
      }
 }

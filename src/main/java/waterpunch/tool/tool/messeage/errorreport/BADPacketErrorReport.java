@@ -48,6 +48,10 @@ public class BADPacketErrorReport extends ErrorMessenger {
 
      @Override
      public String encodeLog() {
-          return super.encodeLog() + "\n" + getBadRequest().getBadPacketType().getMessage() + "\n" + "SenderIP : " + getSenderIP() + "\n" + "SenderPORT : " + getSenderPort() + "\n" + getPacketData();
+          return super.encodeLog() + getBadRequest().getBadPacketType().getMessage();
+     }
+
+     public String encodeDeta() {
+          return "SenderIP : " + getSenderIP() + "\n" + "SenderPORT : " + getSenderPort() + "\n" + getPacketData();
      }
 }

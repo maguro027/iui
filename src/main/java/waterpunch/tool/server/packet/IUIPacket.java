@@ -35,7 +35,8 @@ public class IUIPacket {
      }
 
      public byte[] packetConverter(IUIPacket packet) {
-          Gson gson = new GsonBuilder().serializeNulls().create();
+          Gson gson = new GsonBuilder().create();
+          // Gson gson = new GsonBuilder().serializeNulls().create();
           String json = gson.toJson(packet);
           return json.getBytes(StandardCharsets.UTF_8);
      }

@@ -2,13 +2,10 @@ package waterpunch.tool.item;
 
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nonnull;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import waterpunch.tool.data.Info;
 import waterpunch.tool.tool.messeage.ColoredText;
 
@@ -18,7 +15,8 @@ import waterpunch.tool.tool.messeage.ColoredText;
 
 public class ItemCreator extends Info {
 
-     private final ItemStack item;
+     private Material material;
+     private List<String> descriptions;
 
      //システムアイテムの識別タグです。
      public static String SYSTEM_ITEM = ColoredText.setRED("SYSTEM_ITEM");
@@ -30,12 +28,9 @@ public class ItemCreator extends Info {
       * @param name アイテム名を生成します。文字コードにも対応しています。
       * @param descriptions 説明文を追加できます。
       */
-     public ItemCreator(@Nonnull Material material, @Nonnull String name) {
+     public ItemCreator(Material material, String name) {
           super(name);
-          item = new ItemStack(material);
-          ItemMeta meta = item.getItemMeta();
-          if (meta != null) meta.setDisplayName(name);
-          item.setItemMeta(meta);
+          this.material = material;
      }
 
      /**
@@ -47,13 +42,8 @@ public class ItemCreator extends Info {
       */
      public ItemCreator(@Nonnull Material material, String name, String descriptions) {
           super(name);
-          item = new ItemStack(material);
-          ItemMeta meta = item.getItemMeta();
-          if (meta != null) {
-               meta.setDisplayName(name);
-               if (descriptions != null) meta.setLore(Arrays.asList(descriptions));
-          }
-          item.setItemMeta(meta);
+          this.material = material;
+          this.descriptions = Arrays.asList(descriptions);
      }
 
      /**
@@ -65,16 +55,18 @@ public class ItemCreator extends Info {
       */
      public ItemCreator(@Nonnull Material material, String name, List<String> descriptions) {
           super(name);
-          item = new ItemStack(material);
-          ItemMeta meta = item.getItemMeta();
-          if (meta != null) {
-               meta.setDisplayName(name);
-               if (descriptions != null) meta.setLore(descriptions);
-          }
-          item.setItemMeta(meta);
+          this.material = material;
+          this.descriptions = descriptions;
      }
 
      public ItemStack getItem() {
+          ItemStack item = new ItemStack(material);
+          ItemMeta meta = item.getItemMeta();
+          if (meta != null) {
+               meta.setDisplayName(getName());
+               if (descriptions != null) meta.setLore(descriptions);
+          }
+          item.setItemMeta(meta);
           return item;
      }
 }
