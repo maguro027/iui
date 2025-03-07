@@ -1,13 +1,15 @@
 package waterpunch.tool.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import waterpunch.tool.IUITool;
 import waterpunch.tool.InventoryUserInterface;
 import waterpunch.tool.item.IUIItem;
@@ -66,14 +68,12 @@ public class IUIServer {
                     } catch (JsonSyntaxException e) {
                          //TODO ログシステムの追加、ClientPacket以外が送信された場合にサーバーログに記録する
                          // ErrorMessenger.UnknownPacketType.getMessage();0
-
                          clientSocket.close();
                     } catch (Exception e) {
                          //TODO ログシステムの追加、不明なエラーが発生した場合にサーバーログに記録する
                          // ErrorMessenger.UnknownError.getMessage();
                          clientSocket.close();
                     }
-
                     out.println("responseだよ");
                     // 接続を閉じる
                }
@@ -125,13 +125,9 @@ public class IUIServer {
                               }
                          }
                          //アイテムを登録してます
-                         if (!serverFirstConnect.getItems().isEmpty()) {
-                              for (IUIItem item : serverFirstConnect.getItems()) {
-                                   if (ItemTool.checkItemList(items.get(serverFirstConnect.getPluginName()), item)) {
-                                        items.put(serverFirstConnect.getPluginName(), serverFirstConnect.getItems());
-                                   }
-                              }
-                         }
+
+                         addIUIItem(serverFirstConnect.getPluginName(), serverFirstConnect.getItems());
+
                          out.println(true);
                          return true;
                     } catch (JsonSyntaxException e) {
@@ -147,5 +143,25 @@ public class IUIServer {
                     break;
           }
           return false;
+     }
+
+     public static void addIUIItem(String pluginName, ArrayList<IUIItem> items) {
+          //リストが空の場合は処理を行いません。
+          if (items.isEmpty()) return;
+          //forでリストを分解し、addIUIItemを呼び出します。
+          for (IUIItem item : items) {
+               addIUIItem(pluginName, item);
+          }
+     }
+
+     public static void addIUIItem(String pluginName, IUIItem item) {
+          //アイテムリストが存在しない場合は新規作成します。
+          if (items.get(pluginName) == null) items.put(pluginName, new ArrayList<>());
+          if (ItemTool.checkItemList(items.get(pluginName), item)) {
+               items.get(pluginName).add(item);
+               System.out.println(new Messenger("[" + pluginName + "] " + ColoredText.setGREEN("■") + item.getName()).encodeLog() + " Add");
+          } else {
+               System.out.println(new Messenger("[" + pluginName + "] " + ColoredText.setYELLOW("■") + item.getName()).encodeLog() + " is Already registered.");
+          }
      }
 }

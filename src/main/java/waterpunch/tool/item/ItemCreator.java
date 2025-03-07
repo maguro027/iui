@@ -15,7 +15,7 @@ import waterpunch.tool.tool.messeage.ColoredText;
 
 public class ItemCreator extends Info {
 
-     private Material material;
+     private final Material material;
      private List<String> descriptions;
 
      //システムアイテムの識別タグです。

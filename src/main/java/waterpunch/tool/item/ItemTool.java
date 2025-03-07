@@ -2,6 +2,10 @@ package waterpunch.tool.item;
 
 import java.util.ArrayList;
 
+/**
+ * @author maguro027
+ * @version 0.1
+ */
 public class ItemTool {
 
      /**
@@ -11,9 +15,11 @@ public class ItemTool {
       * @return アイテムが存在しない場合はtrue、存在する場合はfalse
       */
      public static boolean checkItemList(ArrayList<IUIItem> items, IUIItem target) {
-          if (items == null) return true;
+          // アイテムリストが空の場合はtrueを返します。
+          if (items.isEmpty()) return true;
+          // アイテムリストのアイテムを1つずつ確認します。
           for (IUIItem item : items) {
-               if (item.getID() == target.getID()) {
+               if (item.getName().equals(target.getName())) {
                     return false;
                }
           }
