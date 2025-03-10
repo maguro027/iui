@@ -1,9 +1,11 @@
 package waterpunch.tool.server.packet;
 
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.nio.charset.StandardCharsets;
-import waterpunch.tool.Core;
 
 /**
  * @author maguro027
@@ -15,7 +17,7 @@ public class IUIPacket {
      @SuppressWarnings("unused")
      private final String title = "IUI";
 
-     private final String version;
+     private String create;
 
      /**
       * @param type パケットのタイプ
@@ -23,15 +25,16 @@ public class IUIPacket {
       * @see IUIPacket#IUIPacket(PacketType)
       */
      public IUIPacket() {
-          version = Core.getIUIVersion();
+          setCreateData();
      }
 
-     /**
-      * @see IUIのバージョンを取得します。
-      * @return IUIのバージョン
-      */
-     public String getVersion() {
-          return version;
+     public String getCreate() {
+          return create;
+     }
+
+     private void setCreateData() {
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+          create = sdf.format(new Date());
      }
 
      public byte[] packetConverter(IUIPacket packet) {

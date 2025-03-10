@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.UUID;
 
 import waterpunch.tool.Core;
 import waterpunch.tool.InventoryUserInterface;
@@ -19,6 +20,7 @@ public class ClientPacket extends IUIPacket {
 
      private ClientPacketType type = ClientPacketType.PING;
      private String pluginName;
+     private UUID secretKEY;
 
      public ClientPacket(ClientPacketType type) {
           super();
@@ -50,6 +52,14 @@ public class ClientPacket extends IUIPacket {
           this.pluginName = pluginName;
      }
 
+     public UUID getSecretKEY() {
+          return secretKEY;
+     }
+
+     public void setSecretKEY(UUID secretKEY) {
+          this.secretKEY = secretKEY;
+     }
+
      /**
       * @see パケットのタイプを指定します。
       * @param type パケットのタイプ
@@ -64,6 +74,7 @@ public class ClientPacket extends IUIPacket {
           IUIListGetRequest,
           IUIGetRequest,
           IUIItemUPLoadRequest,
+          ServerFirstConnect,
      }
 
      public void sendIUI(InventoryUserInterface iui) throws IOException {

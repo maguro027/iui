@@ -1,11 +1,16 @@
 package waterpunch.tool.server.packet.client;
 
 import java.util.ArrayList;
+
 import waterpunch.tool.item.IUIItem;
 
-public final class IUIItemUPLoadRequest extends ClientPacket {
+public class IUIItemUPLoadRequest extends ClientPacket {
 
      private final ArrayList<IUIItem> items = new ArrayList<>();
+
+     public IUIItemUPLoadRequest() {
+          super(ClientPacketType.IUIItemUPLoadRequest);
+     }
 
      public IUIItemUPLoadRequest(IUIItem iuiItem) {
           super(ClientPacketType.IUIItemUPLoadRequest);
@@ -17,15 +22,31 @@ public final class IUIItemUPLoadRequest extends ClientPacket {
           items.addAll(iuiItems);
      }
 
-     public void addItem(IUIItem iuiItem) {
+     public final void addItem(IUIItem iuiItem) {
           items.add(iuiItem);
+     }
+
+     public void addItems(ArrayList<IUIItem> iuiItems) {
+          items.addAll(iuiItems);
+     }
+
+     public IUIItem getItem(int index) {
+          return items.get(index);
      }
 
      public ArrayList<IUIItem> getItems() {
           return items;
      }
 
-     public IUIItem getItem(int index) {
-          return items.get(index);
+     public void removeItem(int index) {
+          items.remove(index);
+     }
+
+     public void clearItems() {
+          items.clear();
+     }
+
+     public int size() {
+          return items.size();
      }
 }

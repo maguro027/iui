@@ -1,11 +1,6 @@
 package waterpunch.tool.server.packet.client;
 
-import java.util.ArrayList;
-
-import waterpunch.tool.IUITool;
-import waterpunch.tool.InventoryUserInterface;
-import waterpunch.tool.item.IUIItem;
-import waterpunch.tool.item.ItemTool;
+import waterpunch.tool.Core;
 
 /**
  * @author maguro027
@@ -13,42 +8,24 @@ import waterpunch.tool.item.ItemTool;
  * このクラスは、サーバーに最初に接続するためのパケットです。
  * ポートやIUIのバージョン情報を送信します。
  */
-public final class ServerFirstConnect extends ClientPacket {
+public final class ServerFirstConnect extends IUIItemUPLoadRequest {
 
-     private final ArrayList<InventoryUserInterface> iuis;
-     private final ArrayList<IUIItem> items;
+     private final String version;
 
      /**
       * @see サーバーとの初回通信用のパケットです。
-      * @see ここの情報がサーバー上に保持されます。
+      * @see 名前の登録とついでにパブリックアイテムの登録をします。
       */
      public ServerFirstConnect() {
-          super(ClientPacketType.IUIServerFastConnect);
-          iuis = new ArrayList<>();
-          items = new ArrayList<>();
-     }
+          super();
+          version = Core.getIUIVersion();
+          setPacketType(ClientPacketType.ServerFirstConnect);
+     }/**
+      * @see IUIのバージョンを取得します。
+      * @return IUIのバージョン
+      */
 
-     public void addIUI(InventoryUserInterface iui) {
-          if (IUITool.checkIUIList(getIUIs(), iui)) iuis.add(iui);
-     }
-
-     public void addIUIs(ArrayList<InventoryUserInterface> iuis) {
-          for (InventoryUserInterface iui : getIUIs()) if (IUITool.checkIUIList(getIUIs(), iui)) this.iuis.add(iui);
-     }
-
-     public ArrayList<InventoryUserInterface> getIUIs() {
-          return iuis;
-     }
-
-     public void addItems(ArrayList<IUIItem> items) {
-          for (IUIItem iuiItem : items) addItem(iuiItem);
-     }
-
-     public void addItem(IUIItem item) {
-          if (ItemTool.checkItemList(getItems(), item)) items.add(item);
-     }
-
-     public ArrayList<IUIItem> getItems() {
-          return items;
+     public String getVersion() {
+          return version;
      }
 }
