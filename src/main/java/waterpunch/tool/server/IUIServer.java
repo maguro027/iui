@@ -87,30 +87,39 @@ public class IUIServer {
           items.clear();
      }
 
+     /**
+      * パケットの処理を行います。
+      * @param type パケットのタイプ
+      * @param data パケットのデータ
+      * @param socket ソケット
+      * @param out 出力
+      * @return 処理が成功した場合はtrue、失敗した場合はfalseを返します。
+      */
      public static boolean packetSwitcher(ClientPacketType type, String data, Socket socket, PrintWriter out) {
           Gson gson = new Gson();
-          switch (type) {
-               case IUIDeleteRequest:
-                    break;
-               case IUIGetRequest:
-                    break;
-               case IUIItemUPLoadRequest:
-                    IUIItemUPLoadRequest iuiItemUPLoadRequest = gson.fromJson(data, IUIItemUPLoadRequest.class);
-                    if (!checkConnectionServers(iuiItemUPLoadRequest.getPluginName(), iuiItemUPLoadRequest.getSecretKEY())) return false;
-                    addIUIItem(iuiItemUPLoadRequest.getPluginName(), iuiItemUPLoadRequest.getItems());
-                    break;
-               case IUIListGetRequest:
-                    break;
-               case IUISERVERRESPONSE:
-                    break;
-               case IUIServerFastConnect:
-                    try {
-                         ServerFirstConnect serverFirstConnect = gson.fromJson(data, ServerFirstConnect.class);
+          try {
+               switch (type) {
+                    case IUIDeleteRequest:
+                         break;
+                    case IUIGetRequest:
+                         break;
+                    case IUIItemUPLoadRequest:
+                         IUIItemUPLoadRequest iuiItemUPLoadRequest = gson.fromJson(data, IUIItemUPLoadRequest.class);
+                         if (!checkConnectionServers(iuiItemUPLoadRequest.getPluginName())) return false;
+                         if (!checkKey(iuiItemUPLoadRequest.getPluginName(), iuiItemUPLoadRequest.getSecretKEY())) return false;
 
-                         //ConnectionServersにサーバーの名前を追加します。
+                         addIUIItem(iuiItemUPLoadRequest.getPluginName(), iuiItemUPLoadRequest.getItems());
+                         break;
+                    case IUIListGetRequest:
+                         break;
+                    case IUISERVERRESPONSE:
+                         break;
+                    case IUIServerFastConnect:
+                         ServerFirstConnect serverFirstConnect = gson.fromJson(data, ServerFirstConnect.class);
                          System.out.println(new Messenger("Get ServerFirstConnect... from " + serverFirstConnect.getPluginName()).encodeLog());
 
-                         if (connectionServers.get(serverFirstConnect.getPluginName()) != null) {
+                         //サーバーの名前が既に登録されている場合はエラーを返します。
+                         if (checkConnectionServers(serverFirstConnect.getPluginName())) {
                               System.out.println(new Messenger(serverFirstConnect.getPluginName() + " Registered " + ColoredText.setRED("Failure.")).encodeLog());
                               BadRequest errorPacket = new BadRequest(BadRequest.BadPacketType.ExistingName);
                               BADPacketErrorReport errorReport = new BADPacketErrorReport(errorPacket, data, socket);
@@ -121,33 +130,55 @@ public class IUIServer {
                          //UUIDの秘密鍵を生成し、メモリに格納します。
                          UUID key = UUID.randomUUID();
                          connectionServers.put(serverFirstConnect.getPluginName(), key);
+
+                         //ConnectionServersにサーバーの名前を追加します。
                          System.out.println(new Messenger(serverFirstConnect.getPluginName() + " Registered " + ColoredText.setGREEN("Success.")).encodeLog());
 
-                         //アイテムを登録してます
+                         //アイテムを登録します。
                          addIUIItem(serverFirstConnect.getPluginName(), serverFirstConnect.getItems());
 
                          out.println(true);
                          return true;
-                    } catch (JsonSyntaxException e) {
-                         // デシリアライズに失敗した場合の処理
-                         System.err.println("パケットのデシリアライズに失敗しました: " + e.getMessage());
-                    }
-                    break;
-               case IUIUPLoadRequest:
-                    break;
-               case PING:
-                    break;
-               default:
-                    break;
+                    case IUIUPLoadRequest:
+                         break;
+                    case PING:
+                         break;
+                    default:
+                         break;
+               }
+               return false;
+          } catch (JsonSyntaxException e) {
+               //TODO ログシステムの追加、ClientPacket以外が送信された場合にサーバーログに記録する
+               // ErrorMessenger.UnknownPacketType.getMessage();
+               return false;
           }
-          return false;
      }
 
-     public static Boolean checkConnectionServers(String pluginName, UUID key) {
-          if (connectionServers.get(pluginName) == null) return false;
+     /**
+      * サーバーに接続されているか確認します。
+      * @param pluginName プラグインの名前
+      * @return 接続されている場合はtrue、接続されていない場合はfalseを返します。
+      */
+     public static Boolean checkConnectionServers(String pluginName) {
+          return connectionServers.containsKey(pluginName);
+     }
+
+     /**
+      * サーバーの秘密鍵が正しいか確認します。
+      * @param pluginName プラグインの名前
+      * @param key サーバーの秘密鍵
+      * @return 秘密鍵が正しい場合はtrue、正しくない場合はfalseを返します。
+      */
+     public static Boolean checkKey(String pluginName, UUID key) {
+          if (!checkConnectionServers(pluginName)) return false;
           return connectionServers.get(pluginName).equals(key);
      }
 
+     /**
+      * アイテムを登録します。
+      * @param pluginName プラグインの名前
+      * @param items アイテムのリスト
+      */
      public static void addIUIItem(String pluginName, ArrayList<IUIItem> items) {
           //リストが空の場合は処理を行いません。
           if (items.isEmpty()) return;
@@ -155,6 +186,12 @@ public class IUIServer {
           for (IUIItem item : items) addIUIItem(pluginName, item);
      }
 
+     /**
+      * アイテムを登録します。
+      * @param pluginName プラグインの名前
+      * @param item アイテム
+      * @return 登録に成功した場合はtrue、失敗した場合はfalseを返します。
+      */
      public static boolean addIUIItem(String pluginName, IUIItem item) {
           //アイテムリストが存在しない場合は新規作成します。
           if (items.get(pluginName) == null) items.put(pluginName, new ArrayList<>());
