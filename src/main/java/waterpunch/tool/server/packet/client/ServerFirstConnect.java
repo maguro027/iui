@@ -19,7 +19,7 @@ public final class ServerFirstConnect extends IUIItemUPLoadRequest {
      public ServerFirstConnect() {
           super();
           version = Core.getIUIVersion();
-          setPacketType(ClientPacketType.ServerFirstConnect);
+          setPacketType(ClientPacketType.IUIServerFastConnect);
      }/**
       * @see IUIのバージョンを取得します。
       * @return IUIのバージョン

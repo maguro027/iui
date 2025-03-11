@@ -74,7 +74,6 @@ public class ClientPacket extends IUIPacket {
           IUIListGetRequest,
           IUIGetRequest,
           IUIItemUPLoadRequest,
-          ServerFirstConnect,
      }
 
      public void sendIUI(InventoryUserInterface iui) throws IOException {

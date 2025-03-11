@@ -1,7 +1,9 @@
 package waterpunch.tool;
 
-import com.google.gson.Gson;
 import org.bukkit.Material;
+
+import com.google.gson.Gson;
+
 import waterpunch.tool.data.enums.ItemType;
 import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.server.packet.client.ServerFirstConnect;
@@ -21,7 +23,7 @@ public class TestSpeace {
           //      System.out.println(packet1.sendPacket());
           // }
           ServerFirstConnect packet1 = new ServerFirstConnect();
-          for (int i = 0; i < 24; i++) {
+          for (int i = 0; i < 5; i++) {
                packet1.addItem(new IUIItem(ItemType.VIEW, Material.HOPPER, String.valueOf(i), String.valueOf(i)));
           }
           System.out.println(new Gson().toJson(packet1));

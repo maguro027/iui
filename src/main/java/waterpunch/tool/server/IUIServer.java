@@ -97,6 +97,7 @@ public class IUIServer {
       */
      public static boolean packetSwitcher(ClientPacketType type, String data, Socket socket, PrintWriter out) {
           Gson gson = new Gson();
+
           try {
                switch (type) {
                     case IUIDeleteRequest:
