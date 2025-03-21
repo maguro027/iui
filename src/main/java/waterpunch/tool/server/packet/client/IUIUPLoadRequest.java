@@ -4,22 +4,21 @@ import waterpunch.tool.InventoryUserInterface;
 
 /**
  * @author maguro027
- * @version 0.1
- * このクラスは、IUIサーバーにIUIをアップロードするリクエストを送信するためのクラスです。
+ * @version 0.1 このクラスは、IUIサーバーにIUIをアップロードするリクエストを送信するためのクラスです。
  */
 public class IUIUPLoadRequest extends ClientPacket {
 
-     private final InventoryUserInterface iui;
+    private final InventoryUserInterface iui;
 
-     public IUIUPLoadRequest(InventoryUserInterface iui) {
-          super(ClientPacketType.IUIUPLoadRequest);
-          this.iui = iui;
-     }
+    public IUIUPLoadRequest(InventoryUserInterface iui) {
+        super(ClientPacketType.IUIUPLoadRequest);
+        this.iui = iui;
+    }
 
-     /**
-      * @return IUIを返します。
-      */
-     public InventoryUserInterface getIUI() {
-          return iui;
-     }
+    /**
+     * @return IUIを返します。
+     */
+    public InventoryUserInterface getIUI() {
+        return iui;
+    }
 }

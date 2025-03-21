@@ -1,3 +1,4 @@
 package waterpunch.tool;
 
-public class IUISettings {}
+public class IUISettings {
+}
