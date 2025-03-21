@@ -17,9 +17,10 @@ public class BadRequest extends ServerPacket {
      }
 
      public enum BadPacketType {
-          BADPluginName(ColoredText.setRED("不正な名前が設定されています。")),
-          CrushPacket(ColoredText.setRED("パケットが壊れています。")),
-          ExistingName(ColoredText.setRED("その名前は既に存在します。")),
+          BADPluginName(ColoredText.setRED("不正な名前が設定されています。")), CrushPacket(
+                    ColoredText.setRED("パケットが壊れています。")), ExistingName(
+                              ColoredText.setRED("その名前は既に存在します。")),
+
           BADRequest(ColoredText.setRED("その操作は許可されていません。"));
 
           private final String message;

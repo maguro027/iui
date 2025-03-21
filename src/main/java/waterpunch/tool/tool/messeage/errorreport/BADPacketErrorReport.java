@@ -52,6 +52,7 @@ public class BADPacketErrorReport extends ErrorMessenger {
      }
 
      public String encodeDeta() {
-          return "SenderIP : " + getSenderIP() + "\n" + "SenderPORT : " + getSenderPort() + "\n" + getPacketData();
+          return "SenderIP : " + getSenderIP() + "\n" + "SenderPORT : " + getSenderPort() + "\n"
+                    + getPacketData();
      }
 }

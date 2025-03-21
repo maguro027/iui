@@ -4,8 +4,7 @@ import waterpunch.tool.InventoryUserInterface;
 
 /**
  * @author maguro027
- * @version 0.1
- * このクラスは、IUIサーバーにIUIをアップロードするリクエストを送信するためのクラスです。
+ * @version 0.1 このクラスは、IUIサーバーにIUIをアップロードするリクエストを送信するためのクラスです。
  */
 public class IUIUPLoadRequest extends ClientPacket {
 

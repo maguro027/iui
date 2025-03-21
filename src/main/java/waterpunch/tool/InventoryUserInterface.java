@@ -23,6 +23,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * デフォルトコンストラクタ
+      * 
       * @see InventoryUserInterface#InventoryUserInterface(IUISize)
       * @see InventoryUserInterface#InventoryUserInterface(String)
       * @see InventoryUserInterface#InventoryUserInterface(String, IUISize)
@@ -34,6 +35,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * サイズを指定するコンストラクタ
+      * 
       * @param size インベントリのサイズ
       * @see InventoryUserInterface#InventoryUserInterface()
       * @see InventoryUserInterface#InventoryUserInterface(String)
@@ -46,6 +48,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * 名前を指定するコンストラクタ
+      * 
       * @param name インベントリの名前
       * @see InventoryUserInterface#InventoryUserInterface()
       * @see InventoryUserInterface#InventoryUserInterface(IUISize)
@@ -57,6 +60,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * 名前とサイズを指定するコンストラクタ
+      * 
       * @param name インベントリの名前
       * @param size インベントリのサイズ
       * @see InventoryUserInterface#InventoryUserInterface()
@@ -70,6 +74,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * カスタマイザーを設定する
+      * 
       * @param customizer カスタマイザー
       * @see InventoryUserInterface#getCustomizer()
       */
@@ -79,6 +84,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * カスタマイザーを取得する
+      * 
       * @return カスタマイザー
       * @see InventoryUserInterface#setCustomizer(IuiCustomizer)
       */
@@ -88,12 +94,14 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * 特定の位置にアイテムを設定する
+      * 
       * @param i 位置
       * @param item アイテム
       * @see InventoryUserInterface#getItem(int)
       */
      public void setItem(int i, IUIItem item) {
-          if (i < 0 || i > getSize().getCount() - 1) return;
+          if (i < 0 || i > getSize().getCount() - 1)
+               return;
 
           items.set(i, item);
      }
@@ -112,9 +120,9 @@ public final class InventoryUserInterface extends Info {
      }
 
      /**
-      * サイズを設定する
-      * インベントリのサイズを変更すると、itemsリストのサイズも変更されます。
+      * サイズを設定する インベントリのサイズを変更すると、itemsリストのサイズも変更されます。
       * その際、サイズが小さくなる場合はitemsリストから削除され、大きくなる場合はnullで埋められます。
+      * 
       * @see InventoryUserInterface#getSize()
       * @param size インベントリのサイズ
       */

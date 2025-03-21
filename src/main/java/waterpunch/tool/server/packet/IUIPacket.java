@@ -9,8 +9,7 @@ import com.google.gson.GsonBuilder;
 
 /**
  * @author maguro027
- * @version 0.1
- * このクラスは、IUIパケットの基底クラスです。
+ * @version 0.1 このクラスは、IUIパケットの基底クラスです。
  */
 public class IUIPacket {
 
