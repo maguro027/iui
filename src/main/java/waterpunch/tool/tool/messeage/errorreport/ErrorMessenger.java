@@ -4,6 +4,7 @@ import waterpunch.tool.tool.messeage.Messenger;
 
 /**
  * @author maguro027
+ * @author maguro027
  */
 public class ErrorMessenger extends Messenger {
 

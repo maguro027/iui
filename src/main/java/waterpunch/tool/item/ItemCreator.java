@@ -20,7 +20,7 @@ public class ItemCreator extends Info {
     private final Material material;
     private List<String> descriptions;
 
-    // システムアイテムの識別タグです。
+    //システムアイテムの識別タグです。
     public static String SYSTEM_ITEM = ColoredText.setRED("SYSTEM_ITEM");
 
     /**

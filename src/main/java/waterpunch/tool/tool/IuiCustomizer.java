@@ -5,6 +5,7 @@ import waterpunch.tool.item.IUIItem;
 
 /**
  * @author maguro027
+ * @author maguro027
  */
 public class IuiCustomizer {
 
