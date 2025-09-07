@@ -68,22 +68,19 @@ public final class InventoryUserInterface extends Info {
      }
 
      /**
-     * カスタマイザーを設定する
-     *
-     * @param customizer カスタマイザー
-     * @see InventoryUserInterface#getCustomizer()
-     */
-     public void setCustomizer(IuiCustomizer customizer) {
-          this.customizer = customizer;
-     }
-
-     /**
       * カスタマイザーを取得する
       * @return カスタマイザー
       * @see InventoryUserInterface#setCustomizer(IuiCustomizer)
       */
      public IuiCustomizer getCustomizer() {
           return customizer;
+     }
+
+     /**
+      * アイテムを全て削除する
+      */
+     public void clear() {
+          items.clear();
      }
 
      /**
@@ -124,10 +121,30 @@ public final class InventoryUserInterface extends Info {
           items.set(i, item);
      }
 
+     /**
+      * アイテムを全て設定する
+      * @param items アイテムのリスト
+      * @param items すべてを上書きします。
+      * @see InventoryUserInterface#getItems()
+      */
+     public void setItem(ArrayList<IUIItem> items) {
+          clear();
+          this.items = items;
+     }
+
+     /**
+      * アイテムを全て取得する
+      * @return アイテムのリスト
+      */
      public ArrayList<IUIItem> getItems() {
           return items;
      }
 
+     /**
+      * 特定の位置のアイテムを取得する
+      * @param i 位置
+      * @return アイテムが存在しない場合はnullを返します。
+      */
      public IUIItem getItem(int i) {
           try {
                IUIItem item = getItems().get(i);
@@ -161,15 +178,8 @@ public final class InventoryUserInterface extends Info {
           return size;
      }
 
-     public void setType(IUIType type) {
-          this.type = type;
-     }
-
      public IUIType getType() {
           return type;
      }
 
-     public void setItems(ArrayList<IUIItem> items) {
-          this.items = items;
-     }
 }
