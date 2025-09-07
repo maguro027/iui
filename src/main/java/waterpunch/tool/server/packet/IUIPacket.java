@@ -15,7 +15,7 @@ public class IUIPacket {
 
      @SuppressWarnings("unused")
      private final String title = "IUI";
-     private final Calendar currentTime = Calendar.getInstance();
+
      private final String version = Core.getIUIVersion();
 
      /**
@@ -24,10 +24,6 @@ public class IUIPacket {
       * @see IUIPacket#IUIPacket(PacketType)
       */
      public IUIPacket() {
-     }
-
-     public Calendar getCurrentTime() {
-          return currentTime;
      }
 
      public String getVersion() {
