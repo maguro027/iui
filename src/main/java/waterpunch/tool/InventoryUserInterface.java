@@ -17,55 +17,54 @@ public final class InventoryUserInterface extends Info {
 
      private IuiCustomizer customizer = new IuiCustomizer();
 
-     // private Inventory inv = Bukkit.createInventory(null, getSize().getCount(), super.getName());
-
      private ArrayList<IUIItem> items = new ArrayList<>();
 
-     /**
-      * デフォルトコンストラクタ
-      * @see InventoryUserInterface#InventoryUserInterface(IUISize)
-      * @see InventoryUserInterface#InventoryUserInterface(String)
-      * @see InventoryUserInterface#InventoryUserInterface(String, IUISize)
-      */
-
-     public InventoryUserInterface() {
-          super();
+     private InventoryUserInterface(Builder builder) {
+          super(builder.name);
+          this.size = builder.size;
+          this.type = builder.type;
+          this.customizer = builder.customizer;
+          this.items = builder.items;
      }
 
-     /**
-      * サイズを指定するコンストラクタ
-      * @param size インベントリのサイズ
-      * @see InventoryUserInterface#InventoryUserInterface()
-      * @see InventoryUserInterface#InventoryUserInterface(String)
-      * @see InventoryUserInterface#InventoryUserInterface(String, IUISize)
-      */
-     public InventoryUserInterface(@Nonnull IUISize size) {
-          super();
-          setSize(size);
-     }
+     public static class Builder {
+          private String name = "";
+          private IUISize size = IUISize.x1;
+          private IUIType type = IUIType.PRIVATE;
+          private IuiCustomizer customizer = new IuiCustomizer();
+          private ArrayList<IUIItem> items = new ArrayList<>();
 
-     /**
-      * 名前を指定するコンストラクタ
-      * @param name インベントリの名前
-      * @see InventoryUserInterface#InventoryUserInterface()
-      * @see InventoryUserInterface#InventoryUserInterface(IUISize)
-      * @see InventoryUserInterface#InventoryUserInterface(String, IUISize)
-      */
-     public InventoryUserInterface(@Nonnull String name) {
-          super(name);
-     }
+          public Builder() {
+          }
 
-     /**
-      * 名前とサイズを指定するコンストラクタ
-      * @param name インベントリの名前
-      * @param size インベントリのサイズ
-      * @see InventoryUserInterface#InventoryUserInterface()
-      * @see InventoryUserInterface#InventoryUserInterface(IUISize)
-      * @see InventoryUserInterface#InventoryUserInterface(String)
-      */
-     public InventoryUserInterface(String name, @Nonnull IUISize size) {
-          super(name);
-          setSize(size);
+          public Builder name(@Nonnull String name) {
+               this.name = name;
+               return this;
+          }
+
+          public Builder size(@Nonnull IUISize size) {
+               this.size = size;
+               return this;
+          }
+
+          public Builder type(@Nonnull IUIType type) {
+               this.type = type;
+               return this;
+          }
+
+          public Builder customizer(IuiCustomizer customizer) {
+               this.customizer = customizer;
+               return this;
+          }
+
+          public Builder items(ArrayList<IUIItem> items) {
+               this.items = items;
+               return this;
+          }
+
+          public InventoryUserInterface build() {
+               return new InventoryUserInterface(this);
+          }
      }
 
      /**
@@ -87,14 +86,44 @@ public final class InventoryUserInterface extends Info {
      }
 
      /**
+      * アイテムを追加する
+      * @param item 最後尾に追加されます。
+      * @see InventoryUserInterface#setItem(int, IUIItem)
+      */
+     public void addItem(IUIItem item) {
+          items.add(item);
+     }
+
+     /**
+      * 特定の位置にアイテムを追加する
+      * @param i 位置
+      * @param i サイズ以上の数値を入れると最後尾に追加されます。
+      * @param item アイテムがあった場合はその位置に挿入され、以降のアイテムが1つ後ろにずれます。
+      * @see InventoryUserInterface#setItem(int, IUIItem)
+      * @see InventoryUserInterface#getItem(int)
+      */
+     public void addItem(int i, IUIItem item) {
+          if (i < 0 || i > getSize().getCount() - 1) {
+               items.add(item);
+               return;
+          }
+          items.add(i, item);
+     }
+
+     /**
       * 特定の位置にアイテムを設定する
       * @param i 位置
-      * @param item アイテム
+      * @param i サイズ以上の数値を入れると何も起こりません。
+      * @param item アイテムがあった場合は上書きされます。
+      * @param item 効果アイテムを推奨しています。
+      * @param item 詰めてアイテムを設定する場合はaddItem()を使用してください。
+      * @see InventoryUserInterface#addItem(IUIItem)
       * @see InventoryUserInterface#getItem(int)
       */
      public void setItem(int i, IUIItem item) {
-          if (i < 0 || i > getSize().getCount() - 1) return;
-
+          if (i < 0 || i > getSize().getCount() - 1) {
+               return;
+          }
           items.set(i, item);
      }
 
@@ -121,13 +150,14 @@ public final class InventoryUserInterface extends Info {
      public void setSize(IUISize size) {
           this.size = size;
 
-          if (items.size() > size.getCount()) {
+          if (items.size() >= size.getCount()) {
                items.subList(size.getCount(), items.size()).clear();
-          } else {
-               while (items.size() < size.getCount()) {
-                    items.add(null);
-               }
+               return;
           }
+          while (items.size() < size.getCount()) {
+               items.add(null);
+          }
+
      }
 
      public IUISize getSize() {
@@ -145,11 +175,4 @@ public final class InventoryUserInterface extends Info {
      public void setItems(ArrayList<IUIItem> items) {
           this.items = items;
      }
-     //TODO: このメソッドは削除される予定です。IUIServerに移行されます。
-     // @Deprecated
-     // public InventoryUserInterface printInventory() {
-     //      inv = Bukkit.createInventory(super.getOwner(), size.getCount(), super.getName());
-     //      customizer.printBorder(this);
-     //      return this;
-     // }
 }

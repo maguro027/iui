@@ -3,10 +3,10 @@ package waterpunch.tool.data.enums;
 /**
  * @author maguro027
  * @see このenumはMinecraftのインベントリサイズを決めるために用います。
- * @see 9の倍数じゃないといけないなんてめんどくさいね。
  */
 
 public enum IUISize {
+     AUTO(-1),
      x1(9),
      x2(18),
      x3(27),

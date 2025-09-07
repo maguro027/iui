@@ -22,7 +22,8 @@ public class ErrorMessenger extends Messenger {
      }
 
      public enum ErrorType {
-          badPacketType(setRED("不正なパケットタイプです。"));
+          BADPacket(setRED("不正なパケットタイプです。")),
+          BADRequest(setRED("その操作は許可されていません。"));
 
           private final String message;
 
