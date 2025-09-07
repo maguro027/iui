@@ -1,0 +1,6 @@
+Minecraftのサーバーメニュー作成ツールです
+I Inventory
+U User
+I Interface
+
+内部サーバーに個々のプラグインからIUIをパケットで受取り管理・表示を行うものです
