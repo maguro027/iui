@@ -6,7 +6,7 @@ import waterpunch.tool.Core;
  * @author maguro027
  * @version 0.1 このクラスは、サーバーに最初に接続するためのパケットです。 ポートやIUIのバージョン情報を送信します。
  */
-public final class ServerFirstConnect extends IUIItemUPLoadRequest {
+public final class ServerFirstConnect extends ClientPacket {
 
      private final String version;
 
@@ -15,7 +15,7 @@ public final class ServerFirstConnect extends IUIItemUPLoadRequest {
       * @see 名前の登録とついでにパブリックアイテムの登録をします。
       */
      public ServerFirstConnect() {
-          super();
+          super(ClientPacketType.IUIServerFastConnect);
           version = Core.getIUIVersion();
           setPacketType(ClientPacketType.IUIServerFastConnect);
      }

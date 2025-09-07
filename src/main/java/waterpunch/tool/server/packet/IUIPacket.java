@@ -1,10 +1,10 @@
 package waterpunch.tool.server.packet;
 
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import java.util.Calendar;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import waterpunch.tool.Core;
 
 /**
@@ -15,8 +15,8 @@ public class IUIPacket {
 
      @SuppressWarnings("unused")
      private final String title = "IUI";
-
-     private final String version;
+     private final Calendar currentTime = Calendar.getInstance();
+     private final String version = Core.getIUIVersion();
 
      /**
       * @param type パケットのタイプ
@@ -24,11 +24,14 @@ public class IUIPacket {
       * @see IUIPacket#IUIPacket(PacketType)
       */
      public IUIPacket() {
-          setCreateData();
      }
 
-     public String getCreate() {
-          return create;
+     public Calendar getCurrentTime() {
+          return currentTime;
+     }
+
+     public String getVersion() {
+          return version;
      }
 
      public byte[] packetConverter(IUIPacket packet) {
