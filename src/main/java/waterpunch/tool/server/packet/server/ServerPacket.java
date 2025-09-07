@@ -6,8 +6,7 @@ public class ServerPacket extends IUIPacket {
 
      /**
       * @author maguro027
-      * @version 0.1
-      * このクラスは、サーバー用パケットの基底クラスです。
+      * @version 0.1 このクラスは、サーバー用パケットの基底クラスです。
       */
 
      private ServerPacketType type = ServerPacketType.PING;
@@ -26,7 +25,6 @@ public class ServerPacket extends IUIPacket {
      }
 
      public enum ServerPacketType {
-          PING,
-          BadRequest,
+          PING, BadRequest,
      }
 }

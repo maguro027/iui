@@ -5,12 +5,12 @@ import waterpunch.tool.server.packet.client.ServerFirstConnect;
 
 public class TestSpeace {
 
-     public static void main(String[] args) {
-          ClientPacket packet = new ServerFirstConnect();
-          String result;
+    public static void main(String[] args) {
+        ClientPacket packet = new ServerFirstConnect();
+        String result;
 
-          result = packet.sendPacket();
+        result = packet.sendPacket();
 
-          System.out.println(result);
-     }
+        System.out.println(result);
+    }
 }

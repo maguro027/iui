@@ -68,10 +68,11 @@ public final class InventoryUserInterface extends Info {
      }
 
      /**
-      * カスタマイザーを設定する
-      * @param customizer カスタマイザー
-      * @see InventoryUserInterface#getCustomizer()
-      */
+     * カスタマイザーを設定する
+     *
+     * @param customizer カスタマイザー
+     * @see InventoryUserInterface#getCustomizer()
+     */
      public void setCustomizer(IuiCustomizer customizer) {
           this.customizer = customizer;
      }
@@ -113,17 +114,13 @@ public final class InventoryUserInterface extends Info {
      /**
       * 特定の位置にアイテムを設定する
       * @param i 位置
-      * @param i サイズ以上の数値を入れると何も起こりません。
-      * @param item アイテムがあった場合は上書きされます。
-      * @param item 効果アイテムを推奨しています。
-      * @param item 詰めてアイテムを設定する場合はaddItem()を使用してください。
-      * @see InventoryUserInterface#addItem(IUIItem)
+      * @param item アイテム
       * @see InventoryUserInterface#getItem(int)
       */
      public void setItem(int i, IUIItem item) {
-          if (i < 0 || i > getSize().getCount() - 1) {
+          if (i < 0 || i > getSize().getCount() - 1)
                return;
-          }
+
           items.set(i, item);
      }
 
@@ -141,12 +138,12 @@ public final class InventoryUserInterface extends Info {
      }
 
      /**
-      * サイズを設定する
-      * インベントリのサイズを変更すると、itemsリストのサイズも変更されます。
-      * その際、サイズが小さくなる場合はitemsリストから削除され、大きくなる場合はnullで埋められます。
-      * @see InventoryUserInterface#getSize()
-      * @param size インベントリのサイズ
-      */
+     * サイズを設定する インベントリのサイズを変更すると、itemsリストのサイズも変更されます。
+     * その際、サイズが小さくなる場合はitemsリストから削除され、大きくなる場合はnullで埋められます。
+     *
+     * @see InventoryUserInterface#getSize()
+     * @param size インベントリのサイズ
+     */
      public void setSize(IUISize size) {
           this.size = size;
 

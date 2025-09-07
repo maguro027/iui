@@ -1,17 +1,20 @@
 package waterpunch.tool.server.packet;
 
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.gson.Gson;
 import waterpunch.tool.Core;
 
 /**
  * @author maguro027
- * @version 0.1
- * このクラスは、IUIパケットの基底クラスです。
+ * @version 0.1 このクラスは、IUIパケットの基底クラスです。
  */
 public class IUIPacket {
 
      @SuppressWarnings("unused")
-     private final String title = "iuipacket";
+     private final String title = "IUI";
 
      private final String version;
 
@@ -21,19 +24,17 @@ public class IUIPacket {
       * @see IUIPacket#IUIPacket(PacketType)
       */
      public IUIPacket() {
-          version = Core.getIUIVersion();
+          setCreateData();
      }
 
-     /**
-      * @see IUIのバージョンを取得します。
-      * @return IUIのバージョン
-      */
-     public String getVersion() {
-          return version;
+     public String getCreate() {
+          return create;
      }
 
      public byte[] packetConverter(IUIPacket packet) {
-          String json = new Gson().toJson(packet);
-          return json.getBytes();
+          Gson gson = new GsonBuilder().create();
+          // Gson gson = new GsonBuilder().serializeNulls().create();
+          String json = gson.toJson(packet);
+          return json.getBytes(StandardCharsets.UTF_8);
      }
 }

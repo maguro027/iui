@@ -4,34 +4,35 @@ import java.util.ArrayList;
 
 public class InventoryBook {
 
-     private final ArrayList<InventoryUserInterface> list = new ArrayList<>();
+    private final ArrayList<InventoryUserInterface> list = new ArrayList<>();
 
-     public InventoryBook(String name) {}
+    public InventoryBook(String name) {
+    }
 
-     /**
-      * @see リストの最後にiuiを追加します。
-      */
-     public void addPage(InventoryUserInterface iui) {
-          list.add(iui);
-     }
+    /**
+     * @see リストの最後にiuiを追加します。
+     */
+    public void addPage(InventoryUserInterface iui) {
+        list.add(iui);
+    }
 
-     /**
-      * @see ここで指定された番号のlistを置き換えます。
-      * @param i 置き換える番号を代入してください。
-      */
-     public void setPage(int i, InventoryUserInterface iui) {
-          list.set(i, iui);
-     }
+    /**
+     * @see ここで指定された番号のlistを置き換えます。
+     * @param i 置き換える番号を代入してください。
+     */
+    public void setPage(int i, InventoryUserInterface iui) {
+        list.set(i, iui);
+    }
 
-     /**
-      * @see 指定したページを取得できるクラスです。
-      * @param i 取得するページを代入してください。
-      */
-     public InventoryUserInterface getPage(int i) {
-          return list.get(i);
-     }
+    /**
+     * @see 指定したページを取得できるクラスです。
+     * @param i 取得するページを代入してください。
+     */
+    public InventoryUserInterface getPage(int i) {
+        return list.get(i);
+    }
 
-     public int getSize() {
-          return list.size();
-     }
+    public int getSize() {
+        return list.size();
+    }
 }
