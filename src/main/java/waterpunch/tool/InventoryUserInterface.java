@@ -9,19 +9,22 @@ import waterpunch.tool.data.enums.IUISize;
 import waterpunch.tool.data.enums.IUIType;
 import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.tool.IuiCustomizer;
+import waterpunch.tool.tool.iuicustomize.Group;
 import waterpunch.tool.tool.iuicustomize.IUICustom;
 
-public final class InventoryUserInterface extends Info {
+public final class InventoryUserInterface extends Group {
 
      private IUISize size = IUISize.x1;
      private IUIType type = IUIType.PRIVATE;
 
-     private IUICustom custom = new IUICustom(null, null);
+     private Info info = new Info();
+
+     private IUICustom custom = new IUICustom(null);
 
      private ArrayList<IUIItem> items = new ArrayList<>();
 
      private InventoryUserInterface(Builder builder) {
-          super(builder.name);
+          super();
           this.size = builder.size;
           this.type = builder.type;
           this.custom = builder.custom;
@@ -29,17 +32,18 @@ public final class InventoryUserInterface extends Info {
      }
 
      public static class Builder {
-          private String name = "";
+          private Info info = new Info();
           private IUISize size = IUISize.x1;
           private IUIType type = IUIType.PRIVATE;
-          private IUICustom custom = new IUICustom(null, null);
+          private Group group = new Group();
+          private IUICustom custom = new IUICustom(null);
           private ArrayList<IUIItem> items = new ArrayList<>();
 
           public Builder() {
           }
 
-          public Builder name(@Nonnull String name) {
-               this.name = name;
+          public Builder title(@Nonnull String title) {
+               this.info.setName(title);
                return this;
           }
 
@@ -50,6 +54,11 @@ public final class InventoryUserInterface extends Info {
 
           public Builder type(@Nonnull IUIType type) {
                this.type = type;
+               return this;
+          }
+
+          public Builder group(Group group) {
+               this.group = group;
                return this;
           }
 
@@ -69,7 +78,24 @@ public final class InventoryUserInterface extends Info {
      }
 
      /**
+      * グループを取得する
+      * 
+      * @return グループ
+      * @see InventoryUserInterface#addGroup(String, int, GroupType)
+      * @see InventoryUserInterface#addItem(String, IUIItem)
+      * @see InventoryUserInterface#removeGroup(String)
+      */
+     public Group getGroup() {
+          return this;
+     }
+
+     public Info getInfo() {
+          return info;
+     }
+
+     /**
       * カスタマイザーを取得する
+      * 
       * @return カスタマイザー
       * @see InventoryUserInterface#setCustomizer(IuiCustomizer)
       */
@@ -86,6 +112,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * アイテムを追加する
+      * 
       * @param item 最後尾に追加されます。
       * @see InventoryUserInterface#setItem(int, IUIItem)
       */
@@ -95,8 +122,9 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * 特定の位置にアイテムを追加する
-      * @param i 位置
-      * @param i サイズ以上の数値を入れると最後尾に追加されます。
+      * 
+      * @param i    位置
+      * @param i    サイズ以上の数値を入れると最後尾に追加されます。
       * @param item アイテムがあった場合はその位置に挿入され、以降のアイテムが1つ後ろにずれます。
       * @see InventoryUserInterface#setItem(int, IUIItem)
       * @see InventoryUserInterface#getItem(int)
@@ -111,7 +139,8 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * 特定の位置にアイテムを設定する
-      * @param i 位置
+      * 
+      * @param i    位置
       * @param item アイテム
       * @see InventoryUserInterface#getItem(int)
       */
@@ -124,6 +153,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * アイテムを全て設定する
+      * 
       * @param items アイテムのリスト
       * @param items すべてを上書きします。
       * @see InventoryUserInterface#getItems()
@@ -135,6 +165,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * アイテムを全て取得する
+      * 
       * @return アイテムのリスト
       */
      public ArrayList<IUIItem> getItems() {
@@ -143,6 +174,7 @@ public final class InventoryUserInterface extends Info {
 
      /**
       * 特定の位置のアイテムを取得する
+      * 
       * @param i 位置
       * @return アイテムが存在しない場合はnullを返します。
       */
@@ -156,12 +188,12 @@ public final class InventoryUserInterface extends Info {
      }
 
      /**
-     * サイズを設定する インベントリのサイズを変更すると、itemsリストのサイズも変更されます。
-     * その際、サイズが小さくなる場合はitemsリストから削除され、大きくなる場合はnullで埋められます。
-     *
-     * @see InventoryUserInterface#getSize()
-     * @param size インベントリのサイズ
-     */
+      * サイズを設定する インベントリのサイズを変更すると、itemsリストのサイズも変更されます。
+      * その際、サイズが小さくなる場合はitemsリストから削除され、大きくなる場合はnullで埋められます。
+      *
+      * @see InventoryUserInterface#getSize()
+      * @param size インベントリのサイズ
+      */
      public void setSize(IUISize size) {
           this.size = size;
 
