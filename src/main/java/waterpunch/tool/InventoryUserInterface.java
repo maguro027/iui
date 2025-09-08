@@ -9,13 +9,14 @@ import waterpunch.tool.data.enums.IUISize;
 import waterpunch.tool.data.enums.IUIType;
 import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.tool.IuiCustomizer;
+import waterpunch.tool.tool.iuicustomize.IUICustom;
 
 public final class InventoryUserInterface extends Info {
 
      private IUISize size = IUISize.x1;
      private IUIType type = IUIType.PRIVATE;
 
-     private IuiCustomizer customizer = new IuiCustomizer();
+     private IUICustom custom = new IUICustom(null, null);
 
      private ArrayList<IUIItem> items = new ArrayList<>();
 
@@ -23,7 +24,7 @@ public final class InventoryUserInterface extends Info {
           super(builder.name);
           this.size = builder.size;
           this.type = builder.type;
-          this.customizer = builder.customizer;
+          this.custom = builder.custom;
           this.items = builder.items;
      }
 
@@ -31,7 +32,7 @@ public final class InventoryUserInterface extends Info {
           private String name = "";
           private IUISize size = IUISize.x1;
           private IUIType type = IUIType.PRIVATE;
-          private IuiCustomizer customizer = new IuiCustomizer();
+          private IUICustom custom = new IUICustom(null, null);
           private ArrayList<IUIItem> items = new ArrayList<>();
 
           public Builder() {
@@ -52,8 +53,8 @@ public final class InventoryUserInterface extends Info {
                return this;
           }
 
-          public Builder customizer(IuiCustomizer customizer) {
-               this.customizer = customizer;
+          public Builder custom(IUICustom custom) {
+               this.custom = custom;
                return this;
           }
 
@@ -72,8 +73,8 @@ public final class InventoryUserInterface extends Info {
       * @return カスタマイザー
       * @see InventoryUserInterface#setCustomizer(IuiCustomizer)
       */
-     public IuiCustomizer getCustomizer() {
-          return customizer;
+     public IUICustom getIUICustom() {
+          return custom;
      }
 
      /**

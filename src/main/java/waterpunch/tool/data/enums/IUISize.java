@@ -6,12 +6,12 @@ package waterpunch.tool.data.enums;
  */
 public enum IUISize {
      AUTO(-1),
-     x1(9),
-     x2(18),
-     x3(27),
-     x4(36),
-     x5(45),
-     x6(54);
+     x1(8),
+     x2(17),
+     x3(26),
+     x4(35),
+     x5(44),
+     x6(53);
 
      private final int Count;
 
