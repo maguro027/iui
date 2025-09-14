@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.Nullable;
+import javax.swing.text.html.CSS;
 
 import waterpunch.tool.item.IUIItem;
 import waterpunch.tool.tool.iuicustomize.GroupOption.GroupType;
@@ -13,14 +14,20 @@ public class Group {
     private HashMap<String, GroupData> groups = new HashMap<>();
 
     public Group() {
+
+    }
+
+    public Group(String groupName, int maxCount, GroupType type) {
+        addGroup(groupName, maxCount, type);
     }
 
     /**
      * 新しいグループを追加します。既に存在する場合は何もしません。
-     * * @param groupName グループ名
      * 
-     * @param maxCount 最大アイテム数
-     * @param type     グループタイプ
+     * @param groupName グループ名
+     * 
+     * @param maxCount  最大アイテム数
+     * @param type      グループタイプ
      */
     public void addGroup(String groupName, int maxCount, GroupType type) {
         groups.putIfAbsent(groupName, new GroupData(new GroupOption(groupName, maxCount, type), new ArrayList<>()));
@@ -50,12 +57,58 @@ public class Group {
         }
 
         // 最大アイテム数を超えていないかチェック
-        if (items.size() >= option.getMaxCount()) {
+        // -1は無制限
+        if (option.getMaxCount() != -1 && items.size() >= option.getMaxCount()) {
             return;
         }
 
         // アイテムを追加
         items.add(new ItemHolder(item, items.size() + 1));
+    }
+
+    public void setItem(String groupName, int slot, IUIItem item) {
+        GroupData data = groups.get(groupName);
+
+        if (data == null) {
+            return;
+        }
+
+        ArrayList<ItemHolder> items = data.getItems();
+        GroupOption option = data.getOption();
+
+        // スロットが範囲内かチェック
+        if (slot < 1 || slot > option.getMaxCount()) {
+            return;
+        }
+
+        // スロットにアイテムを設定
+        if (slot <= items.size()) {
+            items.set(slot - 1, new ItemHolder(item, slot));
+        } else {
+            // スロットが現在のリストサイズを超えている場合、nullで埋めてから追加
+            while (items.size() < slot - 1) {
+                items.add(new ItemHolder(null, items.size() + 1));
+            }
+            items.add(new ItemHolder(item, slot));
+        }
+
+    }
+
+    public IUIItem getItem(String groupName, int slot) {
+        GroupData data = groups.get(groupName);
+        if (data == null) {
+            return null;
+        }
+
+        ArrayList<ItemHolder> items = data.getItems();
+
+        // スロットが範囲内かチェック
+        if (slot < 1 || slot > items.size()) {
+            return null;
+        }
+
+        ItemHolder holder = items.get(slot - 1);
+        return holder != null ? holder.getItem() : null;
     }
 
     /**
@@ -67,10 +120,12 @@ public class Group {
     }
 
     /**
-     * グループから特定のアイテムを削除します。
-     * * @param groupName グループ名
      * 
-     * @param itemName 削除するアイテム名
+     * グループから特定のアイテムを削除します。
+     * 
+     * @param groupName グループ名
+     *
+     * @param itemName  削除するアイテム名
      */
     public void removeItem(String groupName, String itemName) {
         GroupData data = groups.get(groupName);
@@ -118,10 +173,12 @@ public class Group {
  */
 class GroupData {
     private GroupOption option;
+    private ArrayList<CSS> csses = new ArrayList<>();
     private ArrayList<ItemHolder> items;
 
     public GroupData(GroupOption option, ArrayList<ItemHolder> items) {
         this.option = option;
+        this.csses = new ArrayList<>();
         this.items = items;
     }
 
@@ -131,5 +188,9 @@ class GroupData {
 
     public ArrayList<ItemHolder> getItems() {
         return items;
+    }
+
+    public ArrayList<CSS> getCSSes() {
+        return csses;
     }
 }

@@ -2,7 +2,7 @@ package waterpunch.tool.tool.iuicustomize;
 
 public class GroupOption {
     private String groupName;
-    private int maxCount = 1;
+    private int maxCount = -1;
     private GroupType type = GroupType.VIEW;
 
     public static enum GroupType {

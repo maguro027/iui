@@ -5,8 +5,8 @@ import waterpunch.tool.item.IUIItem;
 public class ItemHolder {
     private IUIItem item;
     // 1からスタート
-    // -1は未設定
-    private int slot = -1;
+    // 0は未設定
+    private int slot = 0;
 
     public ItemHolder(IUIItem item, int slot) {
         setItem(item);

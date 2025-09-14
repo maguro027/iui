@@ -1,6 +1,7 @@
 package waterpunch.tool;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -8,39 +9,34 @@ import waterpunch.tool.data.Info;
 import waterpunch.tool.data.enums.IUISize;
 import waterpunch.tool.data.enums.IUIType;
 import waterpunch.tool.item.IUIItem;
-import waterpunch.tool.tool.IuiCustomizer;
 import waterpunch.tool.tool.iuicustomize.Group;
 import waterpunch.tool.tool.iuicustomize.IUICustom;
 
 public final class InventoryUserInterface extends Group {
 
-     private IUISize size = IUISize.x1;
-     private IUIType type = IUIType.PRIVATE;
-
-     private Info info = new Info();
-
-     private IUICustom custom = new IUICustom(null);
-
-     private ArrayList<IUIItem> items = new ArrayList<>();
+     private IUISize size;
+     private IUIType type;
+     private Info info;
+     private IUICustom custom;
+     private List<IUIItem> items;
 
      private InventoryUserInterface(Builder builder) {
           super();
           this.size = builder.size;
           this.type = builder.type;
+          this.info = builder.info;
           this.custom = builder.custom;
-          this.items = builder.items;
+          this.items = new ArrayList<>(builder.items);
+
+          adjustItemsSize();
      }
 
      public static class Builder {
           private Info info = new Info();
           private IUISize size = IUISize.x1;
           private IUIType type = IUIType.PRIVATE;
-          private Group group = new Group();
           private IUICustom custom = new IUICustom(null);
-          private ArrayList<IUIItem> items = new ArrayList<>();
-
-          public Builder() {
-          }
+          private List<IUIItem> items = new ArrayList<>();
 
           public Builder title(@Nonnull String title) {
                this.info.setName(title);
@@ -57,18 +53,13 @@ public final class InventoryUserInterface extends Group {
                return this;
           }
 
-          public Builder group(Group group) {
-               this.group = group;
-               return this;
-          }
-
           public Builder custom(IUICustom custom) {
                this.custom = custom;
                return this;
           }
 
-          public Builder items(ArrayList<IUIItem> items) {
-               this.items = items;
+          public Builder items(List<IUIItem> items) {
+               this.items = new ArrayList<>(items);
                return this;
           }
 
@@ -77,134 +68,33 @@ public final class InventoryUserInterface extends Group {
           }
      }
 
-     /**
-      * グループを取得する
-      * 
-      * @return グループ
-      * @see InventoryUserInterface#addGroup(String, int, GroupType)
-      * @see InventoryUserInterface#addItem(String, IUIItem)
-      * @see InventoryUserInterface#removeGroup(String)
-      */
-     public Group getGroup() {
-          return this;
-     }
-
      public Info getInfo() {
           return info;
      }
 
-     /**
-      * カスタマイザーを取得する
-      * 
-      * @return カスタマイザー
-      * @see InventoryUserInterface#setCustomizer(IuiCustomizer)
-      */
      public IUICustom getIUICustom() {
           return custom;
      }
 
      /**
-      * アイテムを全て削除する
+      * すべてのアイテムをクリアし、サイズを調整します。
       */
      public void clear() {
           items.clear();
+          adjustItemsSize();
      }
 
      /**
-      * アイテムを追加する
+      * インベントリのサイズを設定し、アイテムリストを調整します。
       * 
-      * @param item 最後尾に追加されます。
-      * @see InventoryUserInterface#setItem(int, IUIItem)
-      */
-     public void addItem(IUIItem item) {
-          items.add(item);
-     }
-
-     /**
-      * 特定の位置にアイテムを追加する
-      * 
-      * @param i    位置
-      * @param i    サイズ以上の数値を入れると最後尾に追加されます。
-      * @param item アイテムがあった場合はその位置に挿入され、以降のアイテムが1つ後ろにずれます。
-      * @see InventoryUserInterface#setItem(int, IUIItem)
-      * @see InventoryUserInterface#getItem(int)
-      */
-     public void addItem(int i, IUIItem item) {
-          if (i < 0 || i > getSize().getCount() - 1) {
-               items.add(item);
-               return;
-          }
-          items.add(i, item);
-     }
-
-     /**
-      * 特定の位置にアイテムを設定する
-      * 
-      * @param i    位置
-      * @param item アイテム
-      * @see InventoryUserInterface#getItem(int)
-      */
-     public void setItem(int i, IUIItem item) {
-          if (i < 0 || i > getSize().getCount() - 1)
-               return;
-
-          items.set(i, item);
-     }
-
-     /**
-      * アイテムを全て設定する
-      * 
-      * @param items アイテムのリスト
-      * @param items すべてを上書きします。
-      * @see InventoryUserInterface#getItems()
-      */
-     public void setItem(ArrayList<IUIItem> items) {
-          clear();
-          this.items = items;
-     }
-
-     /**
-      * アイテムを全て取得する
-      * 
-      * @return アイテムのリスト
-      */
-     public ArrayList<IUIItem> getItems() {
-          return items;
-     }
-
-     /**
-      * 特定の位置のアイテムを取得する
-      * 
-      * @param i 位置
-      * @return アイテムが存在しない場合はnullを返します。
-      */
-     public IUIItem getItem(int i) {
-          try {
-               IUIItem item = getItems().get(i);
-               return item;
-          } catch (Exception e) {
-               return null;
-          }
-     }
-
-     /**
-      * サイズを設定する インベントリのサイズを変更すると、itemsリストのサイズも変更されます。
-      * その際、サイズが小さくなる場合はitemsリストから削除され、大きくなる場合はnullで埋められます。
-      *
-      * @see InventoryUserInterface#getSize()
-      * @param size インベントリのサイズ
+      * @param size 新しいサイズ
       */
      public void setSize(IUISize size) {
-          this.size = size;
-
-          if (items.size() >= size.getCount()) {
-               items.subList(size.getCount(), items.size()).clear();
+          if (this.size == size) {
                return;
           }
-          while (items.size() < size.getCount()) {
-               items.add(null);
-          }
-
+          this.size = size;
+          adjustItemsSize();
      }
 
      public IUISize getSize() {
@@ -215,4 +105,22 @@ public final class InventoryUserInterface extends Group {
           return type;
      }
 
+     public void setType(IUIType type) {
+          this.type = type;
+     }
+
+     /**
+      * itemsリストのサイズを現在のサイズに合わせて調整します。
+      */
+     private void adjustItemsSize() {
+          int targetSize = size.getCount();
+          // サイズが小さくなった場合、余分なアイテムを削除
+          if (items.size() > targetSize) {
+               items = new ArrayList<>(items.subList(0, targetSize));
+          }
+          // サイズが大きくなった場合、nullで埋める
+          while (items.size() < targetSize) {
+               items.add(null);
+          }
+     }
 }
